@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':client-View')
+}
+
+sourceSets {
+    main.java.srcDir 'src/'
+    test.java.srcDir 'test/'
+}

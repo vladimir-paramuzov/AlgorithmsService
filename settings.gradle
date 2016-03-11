@@ -1,0 +1,10 @@
+rootProject.name = 'AlgorithmsService'
+
+include "server/Model"
+project(":server/Model").name = "server-Model"
+
+include "client/ViewModel"
+project(":client/ViewModel").name = "client-ViewModel"
+
+include "client/View"
+project(":client/View").name = "client-View"
