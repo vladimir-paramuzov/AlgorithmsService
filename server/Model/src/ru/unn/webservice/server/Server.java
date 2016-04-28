@@ -1,6 +1,6 @@
-package ru.unn.webservice;
+package ru.unn.webservice.server;
 
-public class Main {
+public class Server {
 	public static void main(final String[] args) {
 		System.out.println("aaaaaaa");
 	}
