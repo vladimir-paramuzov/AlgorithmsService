@@ -1,4 +1,7 @@
 package ru.unn.webservice.storage;
 
-public interface IDataRequest {
+import java.io.Serializable;
+
+public interface IDataRequest extends Serializable{
+
 }
