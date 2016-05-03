@@ -5,3 +5,9 @@ dependencies {
 sourceSets {
     main.java.srcDir 'src/'
 }
+
+launch4j {
+    outfile = 'Client.exe'
+    mainClassName = 'ru.unn.webservice.client.View'
+    //icon = 'icons/myApp.ico'
+}
