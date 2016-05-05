@@ -2,10 +2,10 @@ package ru.unn.webservice.storage;
 
 import java.util.ArrayList;
 
-public class AddAlgorithmRequest implements IDataRequest{
+public class AddAlgorithmDataRequest implements IDataRequest{
     public Algorithm algorithm;
 
-    public AddAlgorithmRequest(Algorithm algorithm) {
+    public AddAlgorithmDataRequest(Algorithm algorithm) {
         this.algorithm = algorithm;
     }
 }

@@ -1,10 +1,10 @@
 package ru.unn.webservice.storage;
 
-public class GetAlgorithmResponse implements IDataResponse {
+public class GetAlgorithmDataResponse implements IDataResponse {
     public Algorithm algorithm;
     public String status;
 
-    public GetAlgorithmResponse(Algorithm algorithm, String status) {
+    public GetAlgorithmDataResponse(Algorithm algorithm, String status) {
         this.algorithm = algorithm;
         this.status = status;
     }
