@@ -17,6 +17,14 @@ import static ru.unn.webservice.storage.User.TYPE.USER;
 
 public class TestDataInitializer {
     public TestDataInitializer(DataAccess dataAccess) {
+        user = new User("testUser", "user", USER, 100, purchasedAlgorithms1);
+        developer = new User("testDeveloper", "developer", DEVELOPER, 200, purchasedAlgorithms2);
+        admin = new User("testAdmin", "admin", ADMIN, 300, purchasedAlgorithms3);
+
+        alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 10, CPP);
+        alg2 = new Algorithm("alg2", "superalg2", tags2, sourceFile, testFile, "testDeveloper", 20, CPP);
+        alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 30, CPP);
+
         this.dataAccess = dataAccess;
         tags1.add("tag1");
         tags1.add("tag2");
@@ -39,17 +47,9 @@ public class TestDataInitializer {
     public void init() {
         clear();
 
-        Algorithm alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 10, CPP);
-        Algorithm alg2 = new Algorithm("alg2", "superalg2", tags2, sourceFile, testFile, "testDeveloper", 20, CPP);
-        Algorithm alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 30, CPP);
-
         dataAccess.writeAlgorithm(alg1);
         dataAccess.writeAlgorithm(alg2);
         dataAccess.writeAlgorithm(alg3);
-
-        User user = new User("testUser", "user", USER, 100, purchasedAlgorithms1);
-        User developer = new User("testDeveloper", "developer", DEVELOPER, 200, purchasedAlgorithms2);
-        User admin = new User("testAdmin", "admin", ADMIN, 300, purchasedAlgorithms3);
 
         dataAccess.writeUser(user);
         dataAccess.writeUser(developer);
@@ -65,6 +65,12 @@ public class TestDataInitializer {
         dataAccess.deleteStatistic();
     }
 
+    public Algorithm alg1;
+    public Algorithm alg2;
+    public Algorithm alg3;
+    public User user;
+    public User developer;
+    public User admin;
     public DataAccess dataAccess;
     public String code = "#include <cstdio>";
     public String testdata = "Here will be test data";

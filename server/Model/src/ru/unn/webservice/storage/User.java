@@ -36,6 +36,31 @@ public class User implements Serializable {
         this.purchasedAlgorithms = purchasedAlgorithms;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (balance != user.balance) return false;
+        if (!login.equals(user.login)) return false;
+        if (!pass.equals(user.pass)) return false;
+        if (type != user.type) return false;
+        return purchasedAlgorithms.equals(user.purchasedAlgorithms);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = login.hashCode();
+        result = 31 * result + pass.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + balance;
+        result = 31 * result + purchasedAlgorithms.hashCode();
+        return result;
+    }
+
     public void print() {
         System.out.println("Login: " + login + " Password: " + pass + " Type: " + type + " Money: " + balance);
     }

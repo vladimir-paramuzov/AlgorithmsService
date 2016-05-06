@@ -28,7 +28,6 @@ public class Server {
 		IDataRequest request3 = new LoadAlgorithmDataRequest("alg1");
 		LoadAlgorithmDataResponse response1 = (LoadAlgorithmDataResponse)da.process(request3);
 		System.out.println(response1.status);
-		response1.algorithm.print();
 
 //		User user = new User("sadgdsdgh", "dfhd11h", User.TYPE.USER, 100500);
 //		IDataRequest request = new StoreUserDataRequest(user);
