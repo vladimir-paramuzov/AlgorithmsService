@@ -25,18 +25,18 @@ public class User implements Serializable {
     public String login;
     public String pass;
     public TYPE type;
-    public int money;
+    public int balance;
     public ArrayList<String> purchasedAlgorithms;
 
-    public User(String login, String pass, TYPE type, int money, ArrayList<String> purchasedAlgorithms) {
+    public User(String login, String pass, TYPE type, int balance, ArrayList<String> purchasedAlgorithms) {
         this.login = login;
         this.pass = pass;
         this.type = type;
-        this.money = money;
+        this.balance = balance;
         this.purchasedAlgorithms = purchasedAlgorithms;
     }
 
     public void print() {
-        System.out.println("Login: " + login + " Password: " + pass + " Type: " + type + " Money: " + money);
+        System.out.println("Login: " + login + " Password: " + pass + " Type: " + type + " Money: " + balance);
     }
 }

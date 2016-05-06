@@ -21,7 +21,7 @@ public class Server {
 		System.out.println(response.status);
 //
 //		IDataRequest request4 = new FindAlgorithmDataRequest(tags);
-//		FindAlgorithmDataResponse response4 = (FindAlgorithmDataResponse)da.process(request4);
+//		FindAlgorithmDataResponse response4 = (FindAlgorithmDataResponse)da.changeBalance(request4);
 //		System.out.println(response4.status);
 //		response4.algorithms.forEach(Algorithm::print);
 
@@ -33,11 +33,11 @@ public class Server {
 //		User user = new User("sadgdsdgh", "dfhd11h", User.TYPE.USER, 100500);
 //		IDataRequest request = new StoreUserDataRequest(user);
 //		IDataRequest request1 = new LoadUserDataRequest("sadgdsdgh");
-//		StoreUserDataResponse response5 = (StoreUserDataResponse)da.process(request);
+//		StoreUserDataResponse response5 = (StoreUserDataResponse)da.changeBalance(request);
 //		System.out.println(response5.status);
-//		LoadUserDataResponse response1 = (LoadUserDataResponse)da.process(request1);
+//		LoadUserDataResponse response1 = (LoadUserDataResponse)da.changeBalance(request1);
 //		System.out.println(response1.status);
 //		response1.user.print();
-//		da.process(request);
+//		da.changeBalance(request);
 	}
 }

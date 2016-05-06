@@ -170,56 +170,51 @@ public class DataAccess implements IDataAccess {
     public String writeUser(User user) {
         File path = new File(USERS_PATH + user.login);
         if (!path.exists()) {
-            if (path.mkdir()) {
-                try {
-                    byte[] data = getBytes(user);
-                    OutputStream outputStream = new FileOutputStream(USERS_PATH + user.login + "/data.bin");
-                    outputStream.write(data, 0, data.length);
-                    outputStream.flush();
-                    outputStream.close();
-                    return "OK";
-                } catch (IOException ex) {
-                    return "FAIL";
-                }
-            } else {
+            if (!path.mkdir()) {
                 return "FAIL";
             }
-        } else {
-            return "USER ALREADY EXISTS";
+        }
+
+        try {
+            byte[] data = getBytes(user);
+            OutputStream outputStream = new FileOutputStream(USERS_PATH + user.login + "/data.bin");
+            outputStream.write(data, 0, data.length);
+            outputStream.flush();
+            outputStream.close();
+            return "OK";
+        } catch (IOException ex) {
+            return "FAIL";
         }
     }
 
     public String writeAlgorithm(Algorithm algorithm) {
         File path = new File(ALGORITHMS_PATH + algorithm.name);
         if (!path.exists()) {
-            if (path.mkdir()) {
-                try {
-                    byte[] data = getBytes(algorithm);
-                    OutputStream outputStream = new FileOutputStream (ALGORITHMS_PATH + algorithm.name + "/data.bin");
-                    outputStream.write(data, 0, data.length);
-                    outputStream.flush();
-                    outputStream.close();
-                    String decodedSource = new String(algorithm.sourceFile, "UTF-8");
-                    BufferedWriter writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/main.cpp"));
-                    writer.write(decodedSource);
-                    writer.flush();
-                    writer.close();
-                    String decodedTests = new String(algorithm.testFile, "UTF-8");
-                    writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/test_data.txt"));
-                    writer.write(decodedTests);
-                    writer.flush();
-                    writer.close();
-                    //outputStream.close();
-                    return "OK";
-                } catch(Exception ex) {
-                    return "FAIL";
-                }
-
-            } else {
+            if (!path.mkdir()) {
                 return "FAIL";
             }
-        } else {
-            return "ALGORITHM ALREADY EXISTS";
+        }
+
+        try {
+            byte[] data = getBytes(algorithm);
+            OutputStream outputStream = new FileOutputStream (ALGORITHMS_PATH + algorithm.name + "/data.bin");
+            outputStream.write(data, 0, data.length);
+            outputStream.flush();
+            outputStream.close();
+            String decodedSource = new String(algorithm.sourceFile, "UTF-8");
+            BufferedWriter writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/main.cpp"));
+            writer.write(decodedSource);
+            writer.flush();
+            writer.close();
+            String decodedTests = new String(algorithm.testFile, "UTF-8");
+            writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/test_data.txt"));
+            writer.write(decodedTests);
+            writer.flush();
+            writer.close();
+            //outputStream.close();
+            return "OK";
+        } catch(Exception ex) {
+            return "FAIL";
         }
     }
 
@@ -247,6 +242,7 @@ public class DataAccess implements IDataAccess {
         deleteDirectory(directory);
         directory.mkdir();
     }
+
 
     public void deleteUsers() {
         File directory = new File(USERS_PATH);
