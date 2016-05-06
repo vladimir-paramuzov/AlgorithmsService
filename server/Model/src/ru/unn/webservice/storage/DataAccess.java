@@ -118,7 +118,7 @@ public class DataAccess implements IDataAccess {
         return new LoadAlgorithmsListDataResponse(algorithmsList, "OK");
     }
 
-    private User readUser(String username) {
+    public User readUser(String username) {
         FileInputStream fstream = null;
         User user = null;
         try {
@@ -132,7 +132,7 @@ public class DataAccess implements IDataAccess {
         }
     }
 
-    private Algorithm readAlgorithm(String algorithmName) {
+    public Algorithm readAlgorithm(String algorithmName) {
         try {
             FileInputStream fstream = new FileInputStream(ALGORITHMS_PATH + algorithmName + "/data.bin");
             ObjectInputStream ostream = new ObjectInputStream(fstream);
@@ -146,7 +146,7 @@ public class DataAccess implements IDataAccess {
         }
     }
 
-    private Statistic readStatistic() {
+    public Statistic readStatistic() {
         Statistic statistic = null;
 
         try {
@@ -167,7 +167,7 @@ public class DataAccess implements IDataAccess {
         return statistic;
     }
 
-    String writeUser(User user) {
+    public String writeUser(User user) {
         File path = new File(USERS_PATH + user.login);
         if (!path.exists()) {
             if (path.mkdir()) {
@@ -189,7 +189,7 @@ public class DataAccess implements IDataAccess {
         }
     }
 
-    String writeAlgorithm(Algorithm algorithm) {
+    public String writeAlgorithm(Algorithm algorithm) {
         File path = new File(ALGORITHMS_PATH + algorithm.name);
         if (!path.exists()) {
             if (path.mkdir()) {
@@ -223,7 +223,7 @@ public class DataAccess implements IDataAccess {
         }
     }
 
-    String writeStatistic(Statistic statistic) {
+    public String writeStatistic(Statistic statistic) {
         try {
             byte[] data = getBytes(statistic);
             OutputStream outputStream = new FileOutputStream(STATISTIC_PATH + "stat.bin");
@@ -236,21 +236,19 @@ public class DataAccess implements IDataAccess {
         }
     }
 
-    void deleteAlgorithms() {
+    public void deleteAlgorithms() {
         File directory = new File(ALGORITHMS_PATH);
         deleteDirectory(directory);
         directory.mkdir();
     }
 
-    void deleteStatistic() {
+    public void deleteStatistic() {
         File directory = new File(STATISTIC_PATH);
         deleteDirectory(directory);
         directory.mkdir();
     }
 
-
-
-    void deleteUsers() {
+    public void deleteUsers() {
         File directory = new File(USERS_PATH);
         deleteDirectory(directory);
         directory.mkdir();

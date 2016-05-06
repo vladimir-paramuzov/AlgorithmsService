@@ -3,62 +3,21 @@ package ru.unn.webservice.storage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.unn.webservice.TestDataInitializer;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.Assert.*;
-import static ru.unn.webservice.storage.User.TYPE.*;
 import static ru.unn.webservice.storage.Algorithm.Language.*;
 
 public class TestDataAccess {
-    public TestDataAccess() {
-        tags1.add("tag1");
-        tags1.add("tag2");
-        tags2.add("tag1");
-        tags3.add("tag1");
-        tags3.add("tag2");
-        tags3.add("tag3");
-
-        purchasedAlgorithms1.add("alg1");
-        purchasedAlgorithms2.add("alg1");
-        purchasedAlgorithms2.add("alg2");
-        purchasedAlgorithms3.add("alg1");
-        purchasedAlgorithms3.add("alg2");
-        purchasedAlgorithms3.add("alg3");
-
-        downloads.add(Calendar.getInstance().getTime());
-        purchases.add(Calendar.getInstance().getTime());
-    }
 
     @Before
     public void setUp() {
         dataAccess = new DataAccess();
 
-        dataAccess.deleteUsers();
-        dataAccess.deleteAlgorithms();
-        dataAccess.deleteStatistic();
-
-        Algorithm alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 10, CPP);
-        Algorithm alg2 = new Algorithm("alg2", "superalg2", tags2, sourceFile, testFile, "testDeveloper", 20, CPP);
-        Algorithm alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 30, CPP);
-
-        dataAccess.writeAlgorithm(alg1);
-        dataAccess.writeAlgorithm(alg2);
-        dataAccess.writeAlgorithm(alg3);
-
-        User user = new User("testUser", "user", USER, 100, purchasedAlgorithms1);
-        User developer = new User("testDeveloper", "developer", DEVELOPER, 200, purchasedAlgorithms2);
-        User admin = new User("testAdmin", "admin", ADMIN, 300, purchasedAlgorithms3);
-
-        dataAccess.writeUser(user);
-        dataAccess.writeUser(developer);
-        dataAccess.writeUser(admin);
-
-        Statistic statistic = new Statistic(downloads, purchases);
-        dataAccess.writeStatistic(statistic);
+        testData = new TestDataInitializer(dataAccess);
+        testData.init();
     }
 
     @Test
@@ -69,9 +28,9 @@ public class TestDataAccess {
 
         assertEquals("alg1", algorithm.name);
         assertEquals("superalg1", algorithm.description);
-        assertEquals(tags1, algorithm.tags);
-        assertArrayEquals(sourceFile, algorithm.sourceFile);
-        assertArrayEquals(testFile, algorithm.testFile);
+        assertEquals(testData.tags1, algorithm.tags);
+        assertArrayEquals(testData.sourceFile, algorithm.sourceFile);
+        assertArrayEquals(testData.testFile, algorithm.testFile);
         assertEquals("testUser", algorithm.owner);
         assertEquals(10, algorithm.cost);
         assertEquals(CPP, algorithm.lang);
@@ -80,7 +39,8 @@ public class TestDataAccess {
 
     @Test
     public void canAddAlgorithm() {
-        Algorithm algorithm = new Algorithm("newalg", "superalg1", tags1, sourceFile, testFile, "testUser", 10, CPP);
+        Algorithm algorithm = new Algorithm("newalg", "superalg1", testData.tags1,
+                                             testData.sourceFile, testData.testFile, "testUser", 10, CPP);
         IDataRequest request = new StoreAlgorithmDataRequest(algorithm);
 
         String status = ((StoreAlgorithmDataResponse)dataAccess.process(request)).status;
@@ -90,7 +50,8 @@ public class TestDataAccess {
 
     @Test
     public void cantAddAlgorithmWithNonUniqueName() {
-        Algorithm algorithm = new Algorithm("alg1", "superalg", tags2, sourceFile, testFile, "testUser", 10, CPP);
+        Algorithm algorithm = new Algorithm("alg1", "superalg", testData.tags2,
+                                             testData.sourceFile, testData.testFile, "testUser", 10, CPP);
         IDataRequest request = new StoreAlgorithmDataRequest(algorithm);
 
         String status = ((StoreAlgorithmDataResponse)dataAccess.process(request)).status;
@@ -112,7 +73,7 @@ public class TestDataAccess {
 
     @Test
     public void canAddUser() {
-        User user = new User("testUser1", "user1", User.TYPE.USER, 101, purchasedAlgorithms1);
+        User user = new User("testUser1", "user1", User.TYPE.USER, 101, testData.purchasedAlgorithms1);
         IDataRequest request = new StoreUserDataRequest(user);
 
         String status = ((StoreUserDataResponse)dataAccess.process(request)).status;
@@ -122,7 +83,7 @@ public class TestDataAccess {
 
     @Test
     public void cantAddUserWithNonUniqueLogin() {
-        User user = new User("testUser", "user1", User.TYPE.USER, 102, purchasedAlgorithms1);
+        User user = new User("testUser", "user1", User.TYPE.USER, 102, testData.purchasedAlgorithms1);
         IDataRequest request = new StoreUserDataRequest(user);
 
         String status = ((StoreUserDataResponse)dataAccess.process(request)).status;
@@ -160,22 +121,9 @@ public class TestDataAccess {
 
     @After
     public void tearDown() {
-        dataAccess.deleteUsers();
-        dataAccess.deleteAlgorithms();
-        dataAccess.deleteStatistic();
+        testData.clear();
     }
 
     private DataAccess dataAccess;
-    private String code = "#include <cstdio>";
-    private String testdata = "Here will be test data";
-    private byte[] sourceFile = code.getBytes(Charset.forName("UTF-8"));
-    private byte[] testFile = testdata.getBytes(Charset.forName("UTF-8"));
-    private ArrayList<String> tags1 = new ArrayList<>();
-    private ArrayList<String> tags2 = new ArrayList<>();
-    private ArrayList<String> tags3 = new ArrayList<>();
-    private ArrayList<String> purchasedAlgorithms1 = new ArrayList<>();
-    private ArrayList<String> purchasedAlgorithms2 = new ArrayList<>();
-    private ArrayList<String> purchasedAlgorithms3 = new ArrayList<>();
-    private ArrayList<Date> downloads = new ArrayList<>();
-    private ArrayList<Date> purchases = new ArrayList<>();
+    private TestDataInitializer testData;
 }
