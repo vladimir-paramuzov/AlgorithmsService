@@ -1,6 +1,7 @@
 package ru.unn.webservice.storage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
     public enum TYPE
@@ -25,12 +26,14 @@ public class User implements Serializable {
     public String pass;
     public TYPE type;
     public int money;
+    public ArrayList<String> purchasedAlgorithms;
 
-    public User(String login, String pass, TYPE type, int money) {
+    public User(String login, String pass, TYPE type, int money, ArrayList<String> purchasedAlgorithms) {
         this.login = login;
         this.pass = pass;
         this.type = type;
         this.money = money;
+        this.purchasedAlgorithms = purchasedAlgorithms;
     }
 
     public void print() {

@@ -8,6 +8,13 @@ public class Statistic implements Serializable {
     private ArrayList<Date> downloads = new ArrayList<>();
     private ArrayList<Date> purchases = new ArrayList<>();
 
+    public Statistic() { }
+
+    public Statistic(ArrayList<Date> downloads, ArrayList<Date> purchases) {
+        this.downloads = downloads;
+        this.purchases = purchases;
+    }
+
     public void addDownload(Date date) {
         downloads.add(date);
     }
