@@ -97,8 +97,8 @@ public class TestDataAccess {
 
         Statistic statistic = ((LoadStatDataResponse)dataAccess.process(request)).statistic;
 
-        assertEquals(1, statistic.getDownloadsCount(null, null));
-        assertEquals(1, statistic.getPurchasesCount(null, null));
+        assertEquals(1, statistic.getDownloadsCount());
+        assertEquals(1, statistic.getPurchasesCount());
     }
 
     @Test

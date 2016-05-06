@@ -22,31 +22,47 @@ public class Statistic implements Serializable {
         purchases.add(date);
     }
 
-    public int getDownloadsCount(Date from, Date to) {
+    public ArrayList<Date> getDownloadsList(Date from, Date to) {
         if (from == null || to == null) {
-            return downloads.size();
+            return downloads;
         }
 
-        int count = 0;
+        ArrayList<Date> result = new ArrayList<>();
         for (Date date : downloads) {
             if (date.after(from) && date.before(to)) {
-                count++;
+                result.add(date);
             }
         }
-        return count;
+        return result;
     }
 
-    public int getPurchasesCount(Date from, Date to) {
+    public ArrayList<Date> getPurchasesList(Date from, Date to) {
         if (from == null || to == null) {
-            return purchases.size();
+            return purchases;
         }
 
-        int count = 0;
+        ArrayList<Date> result = new ArrayList<>();
         for (Date date : purchases) {
             if (date.after(from) && date.before(to)) {
-                count++;
+                result.add(date);
             }
         }
-        return count;
+        return result;
+    }
+
+    public ArrayList<Date> getDownloadsList() {
+        return getDownloadsList(null, null);
+    }
+
+    public ArrayList<Date> getPurchasesList() {
+        return getPurchasesList(null, null);
+    }
+
+    public int getDownloadsCount() {
+        return downloads.size();
+    }
+
+    public int getPurchasesCount() {
+        return purchases.size();
     }
 }
