@@ -2,3 +2,10 @@ sourceSets {
     main.java.srcDir 'src/'
     test.java.srcDir 'test/'
 }
+
+launch4j {
+    outfile = 'Server.exe'
+    mainClassName = 'ru.unn.webservice.server.Server'
+    //jar = "libs/client-View.jar"
+    //icon = 'icons/myApp.ico'
+}
