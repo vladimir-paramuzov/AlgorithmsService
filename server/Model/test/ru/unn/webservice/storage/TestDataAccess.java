@@ -49,17 +49,6 @@ public class TestDataAccess {
     }
 
     @Test
-    public void cantAddAlgorithmWithNonUniqueName() {
-        Algorithm algorithm = new Algorithm("alg1", "superalg", testData.tags2,
-                                             testData.sourceFile, testData.testFile, "testUser", 10, CPP);
-        IDataRequest request = new StoreAlgorithmDataRequest(algorithm);
-
-        String status = ((StoreAlgorithmDataResponse)dataAccess.process(request)).status;
-
-        assertNotEquals("OK", status);
-    }
-
-    @Test
     public void canGetUser() {
         IDataRequest request = new LoadUserDataRequest("testUser");
 
@@ -68,7 +57,7 @@ public class TestDataAccess {
         assertEquals("testUser", user.login);
         assertEquals("user", user.pass);
         assertEquals(User.TYPE.USER, user.type);
-        assertEquals(100, user.money);
+        assertEquals(100, user.balance);
     }
 
     @Test
@@ -79,16 +68,6 @@ public class TestDataAccess {
         String status = ((StoreUserDataResponse)dataAccess.process(request)).status;
 
         assertEquals("OK", status);
-    }
-
-    @Test
-    public void cantAddUserWithNonUniqueLogin() {
-        User user = new User("testUser", "user1", User.TYPE.USER, 102, testData.purchasedAlgorithms1);
-        IDataRequest request = new StoreUserDataRequest(user);
-
-        String status = ((StoreUserDataResponse)dataAccess.process(request)).status;
-
-        assertNotEquals("OK", status);
     }
 
     @Test
