@@ -2,6 +2,7 @@ package ru.unn.webservice.storage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Algorithm implements Serializable {
     public enum Language {
@@ -39,11 +40,34 @@ public class Algorithm implements Serializable {
         this.lang = lang;
     }
 
-    public void print() {
-        System.out.println("Name: " + name
-                         + " Description: " + description
-                         + " Language: " + lang
-                         + " Owner: " + owner
-                         + " Cost: " + cost);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Algorithm algorithm = (Algorithm) o;
+
+        if (cost != algorithm.cost) return false;
+        if (!name.equals(algorithm.name)) return false;
+        if (!description.equals(algorithm.description)) return false;
+        if (!owner.equals(algorithm.owner)) return false;
+        if (!tags.equals(algorithm.tags)) return false;
+        if (lang != algorithm.lang) return false;
+        if (!Arrays.equals(sourceFile, algorithm.sourceFile)) return false;
+        return Arrays.equals(testFile, algorithm.testFile);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + owner.hashCode();
+        result = 31 * result + tags.hashCode();
+        result = 31 * result + cost;
+        result = 31 * result + lang.hashCode();
+        result = 31 * result + Arrays.hashCode(sourceFile);
+        result = 31 * result + Arrays.hashCode(testFile);
+        return result;
     }
 }

@@ -26,15 +26,8 @@ public class TestDataAccess {
 
         Algorithm algorithm = ((LoadAlgorithmDataResponse)dataAccess.process(request)).algorithm;
 
-        assertEquals("alg1", algorithm.name);
-        assertEquals("superalg1", algorithm.description);
-        assertEquals(testData.tags1, algorithm.tags);
-        assertArrayEquals(testData.sourceFile, algorithm.sourceFile);
-        assertArrayEquals(testData.testFile, algorithm.testFile);
-        assertEquals("testUser", algorithm.owner);
-        assertEquals(10, algorithm.cost);
-        assertEquals(CPP, algorithm.lang);
 
+        assertEquals(testData.alg1, algorithm);
     }
 
     @Test
@@ -54,10 +47,7 @@ public class TestDataAccess {
 
         User user = ((LoadUserDataResponse)dataAccess.process(request)).user;
 
-        assertEquals("testUser", user.login);
-        assertEquals("user", user.pass);
-        assertEquals(User.TYPE.USER, user.type);
-        assertEquals(100, user.balance);
+        assertEquals(testData.user, user);
     }
 
     @Test
