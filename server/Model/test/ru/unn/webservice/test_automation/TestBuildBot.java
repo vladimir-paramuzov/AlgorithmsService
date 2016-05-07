@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.server.GetStatisticResponse;
 import ru.unn.webservice.server.TestAlgorithmRequest;
 import ru.unn.webservice.server.TestAlgorithmResponse;
 import ru.unn.webservice.storage.DataAccess;

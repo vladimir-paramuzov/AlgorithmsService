@@ -215,7 +215,6 @@ public class DataAccess implements IDataAccess {
             writer.write(decodedTests);
             writer.flush();
             writer.close();
-            //outputStream.close();
             return "OK";
         } catch(Exception ex) {
             return "FAIL";
