@@ -15,10 +15,10 @@ public class Server {
 		byte[] testFile = testdata.getBytes(Charset.forName("UTF-8"));
 		ArrayList<String> tags = new ArrayList<String>(){ { add("tag1"); add("tag2"); }};
 
-		Algorithm algorithm = new Algorithm("alg1", "superalg2", tags, sourceFile, testFile, "Me", 100500, Algorithm.Language.CPP);
-		IDataRequest request2 = new StoreAlgorithmDataRequest(algorithm);
-		StoreAlgorithmDataResponse response = (StoreAlgorithmDataResponse)da.process(request2);
-		System.out.println(response.status);
+//		Algorithm algorithm = new Algorithm("alg1", "superalg2", tags, sourceFile, testFile, "Me", 100500, Algorithm.Language.CPP);
+//		IDataRequest request2 = new StoreAlgorithmDataRequest(algorithm);
+//		StoreAlgorithmDataResponse response = (StoreAlgorithmDataResponse)da.process(request2);
+//		System.out.println(response.status);
 //
 //		IDataRequest request4 = new FindAlgorithmDataRequest(tags);
 //		FindAlgorithmDataResponse response4 = (FindAlgorithmDataResponse)da.changeBalance(request4);

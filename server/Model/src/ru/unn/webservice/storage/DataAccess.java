@@ -4,11 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DataAccess implements IDataAccess {
-
-    private static String DB_PATH = "/home/vvp/distrib/dev/AlgorithmsService_Build/";
-    private static String USERS_PATH = DB_PATH + "users/";
-    private static String ALGORITHMS_PATH = DB_PATH + "algorithms/";
-    private static String STATISTIC_PATH = DB_PATH + "stat/";
+    public static String DB_PATH = "/home/vvp/distrib/dev/AlgorithmsService_Build/";
+    public static String USERS_PATH = DB_PATH + "users/";
+    public static String ALGORITHMS_PATH = DB_PATH + "algorithms/";
+    public static String STATISTIC_PATH = DB_PATH + "stat/";
 
     public IDataResponse process(IDataRequest request) {
         if (request instanceof StoreUserDataRequest) {
@@ -30,6 +29,11 @@ public class DataAccess implements IDataAccess {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String getAlgorithmsPath() {
+        return ALGORITHMS_PATH;
     }
 
     private StoreUserDataResponse process(StoreUserDataRequest request) {
