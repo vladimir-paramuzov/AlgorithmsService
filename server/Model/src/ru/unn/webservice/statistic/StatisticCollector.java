@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class StatisticCollector implements IStatisticCollector {
-    public StatisticCollector(DataAccess dataAccess) {
+    public StatisticCollector(IDataAccess dataAccess) {
         this.dataAccess = dataAccess;
     }
 
@@ -68,5 +68,5 @@ public class StatisticCollector implements IStatisticCollector {
         return "OK";
     }
 
-    private DataAccess dataAccess;
+    private IDataAccess dataAccess;
 }

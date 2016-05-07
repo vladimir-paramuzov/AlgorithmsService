@@ -21,9 +21,9 @@ public class TestDataInitializer {
         developer = new User("testDeveloper", "developer", DEVELOPER, 200, purchasedAlgorithms2);
         admin = new User("testAdmin", "admin", ADMIN, 300, purchasedAlgorithms3);
 
-        alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 10, CPP);
+        alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 0, CPP);
         alg2 = new Algorithm("alg2", "superalg2", tags2, sourceFile, testFile, "testDeveloper", 20, CPP);
-        alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 30, CPP);
+        alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 300, CPP);
 
         this.dataAccess = dataAccess;
         tags1.add("tag1");
