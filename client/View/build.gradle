@@ -1,10 +1,29 @@
-dependencies {
-    compile project(':client-ViewModel')
-}
+//dependencies {
+//    compile project(':client-ViewModel')
+//}
 
 sourceSets {
     main.java.srcDir 'src/'
 }
+
+//repositories {
+//    flatDir {
+//        dirs '/home/vvp/distrib/bin/idea/lib/'
+//    }
+//}
+//
+//
+//dependencies {
+//    compile 'forms_rt.jar:'
+//}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.unn.webservice.client.View'
+    }
+}
+
+mainClassName = 'ru.unn.webservice.client.View'
 
 launch4j {
     outfile = 'Client.exe'
