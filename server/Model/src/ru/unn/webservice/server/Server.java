@@ -1,42 +1,62 @@
 package ru.unn.webservice.server;
 
+import ru.unn.webservice.authorization.AuthorizationSystem;
+import ru.unn.webservice.authorization.IAuthorizationSystem;
+import ru.unn.webservice.control.AlgorithmControlSystem;
+import ru.unn.webservice.control.IAlgorithmControlSystem;
+import ru.unn.webservice.payment.IPaymentSystem;
+import ru.unn.webservice.payment.PaymentSystemEmulator;
+import ru.unn.webservice.statistic.IStatisticCollector;
+import ru.unn.webservice.statistic.StatisticCollector;
 import ru.unn.webservice.storage.*;
+import ru.unn.webservice.test_automation.BuildBot;
+import ru.unn.webservice.test_automation.IBuildBot;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.security.Key;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Server {
-	public static void main(final String[] args) {
-		System.out.println("aaaaaaa");
-		IDataAccess da = new DataAccess();
-		String code = "#include <cstdio>";
-		String testdata = "Here will be test data";
-		byte[] sourceFile = code.getBytes(Charset.forName("UTF-8"));
-		byte[] testFile = testdata.getBytes(Charset.forName("UTF-8"));
-		ArrayList<String> tags = new ArrayList<String>(){ { add("tag1"); add("tag2"); }};
-
-//		Algorithm algorithm = new Algorithm("alg1", "superalg2", tags, sourceFile, testFile, "Me", 100500, Algorithm.Language.CPP);
-//		IDataRequest request2 = new StoreAlgorithmDataRequest(algorithm);
-//		StoreAlgorithmDataResponse response = (StoreAlgorithmDataResponse)da.process(request2);
-//		System.out.println(response.status);
-//
-//		IDataRequest request4 = new FindAlgorithmDataRequest(tags);
-//		FindAlgorithmDataResponse response4 = (FindAlgorithmDataResponse)da.changeBalance(request4);
-//		System.out.println(response4.status);
-//		response4.algorithms.forEach(Algorithm::print);
-
-		IDataRequest request3 = new LoadAlgorithmDataRequest("alg1");
-		LoadAlgorithmDataResponse response1 = (LoadAlgorithmDataResponse)da.process(request3);
-		System.out.println(response1.status);
-
-//		User user = new User("sadgdsdgh", "dfhd11h", User.TYPE.USER, 100500);
-//		IDataRequest request = new StoreUserDataRequest(user);
-//		IDataRequest request1 = new LoadUserDataRequest("sadgdsdgh");
-//		StoreUserDataResponse response5 = (StoreUserDataResponse)da.changeBalance(request);
-//		System.out.println(response5.status);
-//		LoadUserDataResponse response1 = (LoadUserDataResponse)da.changeBalance(request1);
-//		System.out.println(response1.status);
-//		response1.user.print();
-//		da.changeBalance(request);
+	public Server() {
+		dataAccess = new DataAccess();
+		authorizationSystem = new AuthorizationSystem(dataAccess);
+		paymentSystem = new PaymentSystemEmulator(dataAccess);
+		statisticCollector = new StatisticCollector(dataAccess);
+		buildbot = new BuildBot(dataAccess);
+		algorithmControlSystem = new AlgorithmControlSystem(dataAccess, statisticCollector, paymentSystem);
+		connector = new Connector();
 	}
+
+	public static void main(final String[] args) {
+		Server server = new Server();
+		server.run();
+	}
+
+	public static void waitForEnter() {
+		System.out.println("To kill server type 'kill'");
+		Scanner scanner = new Scanner(System.in);
+		String line;
+		while (!(line = scanner.nextLine()).equals("kill")) {
+			System.out.println(line + ": command not found");
+		}
+
+	}
+
+	public void run() {
+		connector.start();
+		waitForEnter();
+		connector.interrupt();
+	}
+
+	private static IAuthorizationSystem authorizationSystem;
+	private static IAlgorithmControlSystem algorithmControlSystem;
+	private static IPaymentSystem paymentSystem;
+	private static IStatisticCollector statisticCollector;
+	private static IDataAccess dataAccess;
+	private static IBuildBot buildbot;
+	private static Connector connector;
 }
