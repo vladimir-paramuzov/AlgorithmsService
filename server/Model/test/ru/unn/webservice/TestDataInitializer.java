@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static ru.unn.webservice.storage.Algorithm.Language.CPP;
+import static ru.unn.webservice.storage.Language.CPP;
 import static ru.unn.webservice.storage.User.TYPE.ADMIN;
 import static ru.unn.webservice.storage.User.TYPE.DEVELOPER;
 import static ru.unn.webservice.storage.User.TYPE.USER;
@@ -72,9 +72,7 @@ public class TestDataInitializer {
     public User developer;
     public User admin;
     public DataAccess dataAccess;
-    public String code = "#include <cstdio>";
     public String testdata = "Here will be test data";
-    public byte[] sourceFile = code.getBytes(Charset.forName("UTF-8"));
     public byte[] testFile = testdata.getBytes(Charset.forName("UTF-8"));
     public ArrayList<String> tags1 = new ArrayList<>();
     public ArrayList<String> tags2 = new ArrayList<>();
@@ -84,4 +82,35 @@ public class TestDataInitializer {
     public ArrayList<String> purchasedAlgorithms3 = new ArrayList<>();
     public ArrayList<Date> downloads = new ArrayList<>();
     public ArrayList<Date> purchases = new ArrayList<>();
+
+    public String code = "#include <stdio.h>\n" +
+            "#include <iostream>\n" +
+            "#include <fstream>\n" +
+            "\n" +
+            "int main(int argc, char* argv[]) {\n" +
+            "\n" +
+            "\tif (argc < 2) {\n" +
+            "\t\tprintf(\"Error\\n\");\n" +
+            "\t\treturn 1;\n" +
+            "\t}\n" +
+            "\n" +
+            "\tchar* path = argv[1];\n" +
+            "\n" +
+            "\tstd::ifstream input(path);\n" +
+            "\tstd::string line;\n" +
+            "\tif (input.is_open())\n" +
+            "\t{\n" +
+            "\t\twhile ( std::getline (input,line) )\n" +
+            "\t\t{\n" +
+            "\t\t\tstd::cout << line << '\\n';\n" +
+            "\t\t}\n" +
+            "\t\tinput.close();\n" +
+            "\t\treturn 0;\n" +
+            "\t}\n" +
+            "\n" +
+            "\tprintf(\"Couldn't open file\\n\");\n" +
+            "\treturn 1;\n" +
+            "}";
+    public byte[] sourceFile = code.getBytes(Charset.forName("UTF-8"));
+
 }

@@ -8,7 +8,7 @@ import ru.unn.webservice.TestDataInitializer;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static ru.unn.webservice.storage.Algorithm.Language.*;
+import static ru.unn.webservice.storage.Language.*;
 
 public class TestDataAccess {
 
