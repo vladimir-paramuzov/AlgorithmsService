@@ -1,6 +1,7 @@
 package ru.unn.webservice.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,18 +13,27 @@ class Connector extends Thread {
     @Override
     public void run() {
         try {
-            final int port = 6666;
-            ServerSocket serverSocket = new ServerSocket(port);
-            while (!Thread.currentThread().isInterrupted()) {
+            final int port = 9999;
+            serverSocket = new ServerSocket(port, 0, InetAddress.getLocalHost());
+            while (!isInterrupted()) {
                 Socket clientSocket = serverSocket.accept();
 
                 ClientConnection clientConnection = new ClientConnection(clientSocket, server);
                 clientConnection.start();
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.toString());
+            Thread.currentThread().interrupt();
         }
     }
 
+    public void close() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private ServerSocket serverSocket;
     private final Server server;
 }
