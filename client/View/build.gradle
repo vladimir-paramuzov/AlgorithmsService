@@ -6,24 +6,23 @@ sourceSets {
     main.java.srcDir 'src/'
 }
 
-//repositories {
-//    flatDir {
-//        dirs '/home/vvp/distrib/bin/idea/lib/'
-//    }
-//}
-//
-//
-//dependencies {
-//    compile 'forms_rt.jar:'
-//}
+mainClassName = 'ru.unn.webservice.client.View'
 
 jar {
+    doFirst {
+        manifest {
+            if (!configurations.runtime.isEmpty()) {
+                attributes('Class-Path':
+                        configurations.runtime.collect{it.toURI().toString()}.join(' '))
+            }
+        }
+    }
     manifest {
-        attributes 'Main-Class': 'ru.unn.webservice.client.View'
+        attributes ('Class-Path': 'com.intellij:forms_rt:7.0.3 ',
+                    'Main-Class': 'ru.unn.webservice.client.View')
     }
 }
 
-mainClassName = 'ru.unn.webservice.client.View'
 
 launch4j {
     outfile = 'Client.exe'
