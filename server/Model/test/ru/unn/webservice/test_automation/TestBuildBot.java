@@ -25,7 +25,7 @@ public class TestBuildBot {
     public void canTestAlgorithm() throws Exception {
         TestAlgorithmRequest request = new TestAlgorithmRequest("alg1", null);
 
-        TestAlgorithmResponse response = buildbot.process(request);
+        TestAlgorithmResponse response = (TestAlgorithmResponse)buildbot.process(request);
         String decodedLog = new String(response.log, "UTF-8");
 
         assertEquals("OK", response.status);
@@ -38,7 +38,7 @@ public class TestBuildBot {
 
         TestAlgorithmRequest request = new TestAlgorithmRequest("alg1", userData.getBytes(Charset.forName("UTF-8")));
 
-        TestAlgorithmResponse response = buildbot.process(request);
+        TestAlgorithmResponse response = (TestAlgorithmResponse)buildbot.process(request);
         String decodedLog = new String(response.log, "UTF-8");
 
         assertEquals("OK", response.status);

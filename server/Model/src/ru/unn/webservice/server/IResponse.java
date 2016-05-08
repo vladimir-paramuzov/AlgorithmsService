@@ -1,4 +1,6 @@
 package ru.unn.webservice.server;
 
-public interface IResponse {
+import java.io.Serializable;
+
+public interface IResponse extends Serializable {
 }

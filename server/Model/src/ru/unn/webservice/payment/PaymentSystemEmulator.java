@@ -12,9 +12,17 @@ public class PaymentSystemEmulator implements IPaymentSystem {
     }
 
     @Override
-    public ChangeBalanceResponse changeBalance(ChangeBalanceRequest request) {
+    public IResponse process(IRequest request) {
+        if (request instanceof ChangeBalanceRequest) {
+            return changeBalance((ChangeBalanceRequest)request);
+        } else {
+            return null;
+        }
+    }
+
+    private ChangeBalanceResponse changeBalance(ChangeBalanceRequest request) {
         LoadUserDataResponse response = (LoadUserDataResponse)dataAccess.process(
-                                         new LoadUserDataRequest(request.username));
+                new LoadUserDataRequest(request.username));
         if (!response.status.equals("OK")) {
             return new ChangeBalanceResponse(response.status);
         }

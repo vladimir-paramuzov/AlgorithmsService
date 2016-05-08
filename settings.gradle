@@ -1,5 +1,8 @@
 rootProject.name = 'AlgorithmsService'
 
+include "infrastructure"
+project(":infrastructure").name = "Infrastructure"
+
 include "server/Model"
 project(":server/Model").name = "server-Model"
 
@@ -8,3 +11,4 @@ project(":client/ViewModel").name = "client-ViewModel"
 
 include "client/View"
 project(":client/View").name = "client-View"
+
