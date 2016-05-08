@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.server.TestAlgorithmRequest;
-import ru.unn.webservice.server.TestAlgorithmResponse;
+import ru.unn.webservice.infrastructure.TestAlgorithmRequest;
+import ru.unn.webservice.infrastructure.TestAlgorithmResponse;
 import ru.unn.webservice.storage.DataAccess;
 
 import java.nio.charset.Charset;
@@ -25,7 +25,7 @@ public class TestBuildBot {
     public void canTestAlgorithm() throws Exception {
         TestAlgorithmRequest request = new TestAlgorithmRequest("alg1", null);
 
-        TestAlgorithmResponse response = buildbot.process(request);
+        TestAlgorithmResponse response = (TestAlgorithmResponse)buildbot.process(request);
         String decodedLog = new String(response.log, "UTF-8");
 
         assertEquals("OK", response.status);
@@ -38,7 +38,7 @@ public class TestBuildBot {
 
         TestAlgorithmRequest request = new TestAlgorithmRequest("alg1", userData.getBytes(Charset.forName("UTF-8")));
 
-        TestAlgorithmResponse response = buildbot.process(request);
+        TestAlgorithmResponse response = (TestAlgorithmResponse)buildbot.process(request);
         String decodedLog = new String(response.log, "UTF-8");
 
         assertEquals("OK", response.status);

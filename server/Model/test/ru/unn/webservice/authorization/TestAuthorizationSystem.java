@@ -4,13 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.search.SearchSystem;
-import ru.unn.webservice.server.*;
+import ru.unn.webservice.infrastructure.AuthorizationRequest;
+import ru.unn.webservice.infrastructure.AuthorizationResponse;
+import ru.unn.webservice.infrastructure.RegisterRequest;
+import ru.unn.webservice.infrastructure.RegisterResponse;
 import ru.unn.webservice.storage.DataAccess;
 import ru.unn.webservice.storage.IDataAccess;
-import ru.unn.webservice.storage.User;
-
-import java.util.ArrayList;
+import ru.unn.webservice.infrastructure.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

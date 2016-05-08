@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.server.GetStatisticRequest;
-import ru.unn.webservice.server.GetStatisticResponse;
+import ru.unn.webservice.infrastructure.GetStatisticRequest;
+import ru.unn.webservice.infrastructure.GetStatisticResponse;
 import ru.unn.webservice.storage.DataAccess;
 
 import java.util.Calendar;
@@ -25,7 +25,7 @@ public class TestStatisticSystem {
     public void canGetStatistic() {
         GetStatisticRequest request = new GetStatisticRequest(null, null);
 
-        GetStatisticResponse response = statisticCollector.getStatistic(request);
+        GetStatisticResponse response = (GetStatisticResponse)statisticCollector.process(request);
 
         assertEquals("OK", response.status);
         assertEquals(1, response.statistic.getDownloadsCount());
@@ -37,7 +37,7 @@ public class TestStatisticSystem {
         GetStatisticRequest request = new GetStatisticRequest(null, null);
 
         statisticCollector.addDownloadDate(Calendar.getInstance().getTime());
-        GetStatisticResponse response = statisticCollector.getStatistic(request);
+        GetStatisticResponse response = (GetStatisticResponse)statisticCollector.process(request);
 
         assertEquals("OK", response.status);
         assertEquals(2, response.statistic.getDownloadsCount());
@@ -49,7 +49,7 @@ public class TestStatisticSystem {
         GetStatisticRequest request = new GetStatisticRequest(null, null);
 
         statisticCollector.addPurchaseDate(Calendar.getInstance().getTime());
-        GetStatisticResponse response = statisticCollector.getStatistic(request);
+        GetStatisticResponse response = (GetStatisticResponse)statisticCollector.process(request);
 
         assertEquals("OK", response.status);
         assertEquals(1, response.statistic.getDownloadsCount());

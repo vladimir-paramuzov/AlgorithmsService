@@ -1,6 +1,6 @@
 package ru.unn.webservice.authorization;
 
-import ru.unn.webservice.server.*;
+import ru.unn.webservice.infrastructure.*;
 import ru.unn.webservice.storage.*;
 
 import java.util.ArrayList;

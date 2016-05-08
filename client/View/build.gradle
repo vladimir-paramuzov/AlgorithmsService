@@ -1,6 +1,6 @@
-//dependencies {
-//    compile project(':client-ViewModel')
-//}
+dependencies {
+    compile project(':client-ViewModel')
+}
 
 sourceSets {
     main.java.srcDir 'src/'

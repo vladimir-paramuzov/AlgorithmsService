@@ -1,7 +1,7 @@
 package ru.unn.webservice.control;
 
+import ru.unn.webservice.infrastructure.*;
 import ru.unn.webservice.payment.IPaymentSystem;
-import ru.unn.webservice.server.*;
 import ru.unn.webservice.statistic.IStatisticCollector;
 import ru.unn.webservice.storage.*;
 
@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AlgorithmControlSystem implements IAlgorithmControlSystem {
-
-    public AlgorithmControlSystem(IDataAccess dataAccess, IStatisticCollector statisticCollector, IPaymentSystem paymentSystem) {
+    public AlgorithmControlSystem(IDataAccess dataAccess,
+                                  IStatisticCollector statisticCollector,
+                                  IPaymentSystem paymentSystem) {
         this.dataAccess = dataAccess;
         this.statisticCollector = statisticCollector;
         this.paymentSystem = paymentSystem;
@@ -18,43 +19,43 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
     @Override
     public IResponse process(IRequest request) {
-        if (request instanceof DownloadRequest) {
-            return (IResponse)download((DownloadRequest) request);
-        } else if (request instanceof BuyRequest){
-            return (IResponse)buy((BuyRequest)request);
-        } else if (request instanceof AddRequest){
-            return (IResponse)add((AddRequest)request);
-        } else if (request instanceof SearchAlgorithmsRequest){
-            return (IResponse)search((SearchAlgorithmsRequest)request);
+        if (request instanceof DownloadAlgorithmRequest) {
+            return download((DownloadAlgorithmRequest) request);
+        } else if (request instanceof BuyAlgorithmRequest){
+            return buy((BuyAlgorithmRequest)request);
+        } else if (request instanceof AddAlgorithmRequest){
+            return add((AddAlgorithmRequest)request);
+        } else if (request instanceof SearchAlgorithmRequest){
+            return search((SearchAlgorithmRequest)request);
         } else {
             return null;
         }
     }
 
-    private AddResponse add(AddRequest request) {
+    private AddAlgorithmResponse add(AddAlgorithmRequest request) {
         LoadAlgorithmDataResponse algorithmResponse = (LoadAlgorithmDataResponse)dataAccess.process(
                 new LoadAlgorithmDataRequest(request.algorithm.name));
 
         if (algorithmResponse.status.equals("OK")) {
-            return new AddResponse("ALGORITHM ALREADY EXISTS");
+            return new AddAlgorithmResponse("ALGORITHM ALREADY EXISTS");
         }
 
-        return new AddResponse(((StoreAlgorithmDataResponse)dataAccess.process(
+        return new AddAlgorithmResponse(((StoreAlgorithmDataResponse)dataAccess.process(
                                  new StoreAlgorithmDataRequest(request.algorithm))).status);
     }
 
-    private DownloadResponse download(DownloadRequest request) {
+    private DownloadAlgorithmResponse download(DownloadAlgorithmRequest request) {
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
                                              new LoadUserDataRequest(request.username));
         if (!userResponse.status.equals("OK")) {
-            return new DownloadResponse(null, userResponse.status);
+            return new DownloadAlgorithmResponse(null, userResponse.status);
         }
 
         LoadAlgorithmDataResponse algorithmResponse = (LoadAlgorithmDataResponse)dataAccess.process(
                                                         new LoadAlgorithmDataRequest(request.algorithmName));
 
         if (!algorithmResponse.status.equals("OK")) {
-            return new DownloadResponse(null, algorithmResponse.status);
+            return new DownloadAlgorithmResponse(null, algorithmResponse.status);
         }
 
         Algorithm algorithm = algorithmResponse.algorithm;
@@ -70,27 +71,27 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
             }
 
             if (!isAlgorithmBought) {
-                return new DownloadResponse(null, "ALGORITHM IS NOT BOUGHT");
+                return new DownloadAlgorithmResponse(null, "ALGORITHM IS NOT BOUGHT");
             }
         }
 
         statisticCollector.addDownloadDate(Calendar.getInstance().getTime());
 
-        return new DownloadResponse(algorithm, "OK");
+        return new DownloadAlgorithmResponse(algorithm, "OK");
     }
 
-    private BuyResponse buy(BuyRequest request) {
+    private BuyAlgorithmResponse buy(BuyAlgorithmRequest request) {
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
                 new LoadUserDataRequest(request.username));
         if (!userResponse.status.equals("OK")) {
-            return new BuyResponse(userResponse.status);
+            return new BuyAlgorithmResponse(userResponse.status);
         }
 
         LoadAlgorithmDataResponse algorithmResponse = (LoadAlgorithmDataResponse)dataAccess.process(
                 new LoadAlgorithmDataRequest(request.algorithmName));
 
         if (!algorithmResponse.status.equals("OK")) {
-            return new BuyResponse(algorithmResponse.status);
+            return new BuyAlgorithmResponse(algorithmResponse.status);
         }
 
         Algorithm algorithm = algorithmResponse.algorithm;
@@ -98,14 +99,14 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
         for (String algorithmName : user.purchasedAlgorithms) {
             if (algorithmName.equals(request.algorithmName)) {
-                return new BuyResponse("ALGORITHM ALREADY BOUGHT");
+                return new BuyAlgorithmResponse("ALGORITHM ALREADY BOUGHT");
             }
         }
 
-        ChangeBalanceResponse balanceResponse = paymentSystem.changeBalance(
-                                                    new ChangeBalanceRequest(-algorithm.cost, user.login));
+        ChangeBalanceResponse balanceResponse = (ChangeBalanceResponse)paymentSystem.process(
+                                                 new ChangeBalanceRequest(-algorithm.cost, user.login));
         if (!balanceResponse.status.equals("OK")) {
-            return new BuyResponse(balanceResponse.status);
+            return new BuyAlgorithmResponse(balanceResponse.status);
         }
 
         userResponse = (LoadUserDataResponse)dataAccess.process(
@@ -113,7 +114,7 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
         if (!userResponse.status.equals("OK")) {
             dataAccess.process(new StoreUserDataRequest(user));
-            return new BuyResponse(userResponse.status);
+            return new BuyAlgorithmResponse(userResponse.status);
         }
 
         user = userResponse.user;
@@ -123,15 +124,15 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
                                                         new StoreUserDataRequest(user));
 
         if (!storeUserDataResponse.status.equals("OK")) {
-            return new BuyResponse(storeUserDataResponse.status);
+            return new BuyAlgorithmResponse(storeUserDataResponse.status);
         }
 
         statisticCollector.addPurchaseDate(Calendar.getInstance().getTime());
 
-        return new BuyResponse("OK");
+        return new BuyAlgorithmResponse("OK");
     }
 
-    public SearchAlgorithmResponse search(SearchAlgorithmsRequest request) {
+    private SearchAlgorithmResponse search(SearchAlgorithmRequest request) {
         LoadAlgorithmsListDataResponse response = (LoadAlgorithmsListDataResponse)dataAccess.process(
                 new LoadAlgorithmsListDataRequest());
         if (!response.status.equals("OK")) {
@@ -150,7 +151,7 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
         return new SearchAlgorithmResponse(algorithmsList, "OK");
     }
 
-    IStatisticCollector statisticCollector;
-    IPaymentSystem paymentSystem;
-    IDataAccess dataAccess;
+    private IStatisticCollector statisticCollector;
+    private IPaymentSystem paymentSystem;
+    private IDataAccess dataAccess;
 }

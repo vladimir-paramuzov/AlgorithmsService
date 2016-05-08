@@ -1,42 +1,92 @@
 package ru.unn.webservice.server;
 
-import ru.unn.webservice.storage.*;
+import ru.unn.webservice.authorization.AuthorizationSystem;
+import ru.unn.webservice.authorization.IAuthorizationSystem;
+import ru.unn.webservice.control.AlgorithmControlSystem;
+import ru.unn.webservice.control.IAlgorithmControlSystem;
+import ru.unn.webservice.payment.IPaymentSystem;
+import ru.unn.webservice.payment.PaymentSystemEmulator;
+import ru.unn.webservice.statistic.IStatisticCollector;
+import ru.unn.webservice.statistic.StatisticCollector;
+import ru.unn.webservice.storage.DataAccess;
+import ru.unn.webservice.storage.IDataAccess;
+import ru.unn.webservice.test_automation.BuildBot;
+import ru.unn.webservice.test_automation.IBuildBot;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Server {
+public class Server extends Thread {
+    Server() {
+        dataAccess = new DataAccess();
+        authorizationSystem = new AuthorizationSystem(dataAccess);
+        paymentSystem = new PaymentSystemEmulator(dataAccess);
+        statisticCollector = new StatisticCollector(dataAccess);
+        buildbot = new BuildBot(dataAccess);
+        algorithmControlSystem = new AlgorithmControlSystem(dataAccess, statisticCollector, paymentSystem);
+        connector = new Connector(this);
+    }
+
 	public static void main(final String[] args) {
-		System.out.println("aaaaaaa");
-		IDataAccess da = new DataAccess();
-		String code = "#include <cstdio>";
-		String testdata = "Here will be test data";
-		byte[] sourceFile = code.getBytes(Charset.forName("UTF-8"));
-		byte[] testFile = testdata.getBytes(Charset.forName("UTF-8"));
-		ArrayList<String> tags = new ArrayList<String>(){ { add("tag1"); add("tag2"); }};
-
-//		Algorithm algorithm = new Algorithm("alg1", "superalg2", tags, sourceFile, testFile, "Me", 100500, Algorithm.Language.CPP);
-//		IDataRequest request2 = new StoreAlgorithmDataRequest(algorithm);
-//		StoreAlgorithmDataResponse response = (StoreAlgorithmDataResponse)da.process(request2);
-//		System.out.println(response.status);
-//
-//		IDataRequest request4 = new FindAlgorithmDataRequest(tags);
-//		FindAlgorithmDataResponse response4 = (FindAlgorithmDataResponse)da.changeBalance(request4);
-//		System.out.println(response4.status);
-//		response4.algorithms.forEach(Algorithm::print);
-
-		IDataRequest request3 = new LoadAlgorithmDataRequest("alg1");
-		LoadAlgorithmDataResponse response1 = (LoadAlgorithmDataResponse)da.process(request3);
-		System.out.println(response1.status);
-
-//		User user = new User("sadgdsdgh", "dfhd11h", User.TYPE.USER, 100500);
-//		IDataRequest request = new StoreUserDataRequest(user);
-//		IDataRequest request1 = new LoadUserDataRequest("sadgdsdgh");
-//		StoreUserDataResponse response5 = (StoreUserDataResponse)da.changeBalance(request);
-//		System.out.println(response5.status);
-//		LoadUserDataResponse response1 = (LoadUserDataResponse)da.changeBalance(request1);
-//		System.out.println(response1.status);
-//		response1.user.print();
-//		da.changeBalance(request);
+		Server server = new Server();
+		server.run();
 	}
+
+	private static void waitForEnter() {
+		System.out.println("To kill server type 'kill'");
+		Scanner scanner = new Scanner(System.in);
+		String line;
+		while (!(line = scanner.nextLine()).equals("kill")) {
+			System.out.println(line + ": command not found");
+		}
+	}
+
+    @Override
+	public void run() {
+		connector.start();
+        while (!connector.isAlive());
+        waitForEnter();
+        connector.interrupt();
+	}
+
+    @Override
+    public void interrupt() {
+        connector.interrupt();
+        super.interrupt();
+    }
+
+    boolean isConnectorAlive() {
+        return connector.isAlive();
+    }
+
+	IAuthorizationSystem getAuthorizationSystem() {
+		return authorizationSystem;
+	}
+
+	IAlgorithmControlSystem getAlgorithmControlSystem() {
+		return algorithmControlSystem;
+	}
+
+	IPaymentSystem getPaymentSystem() {
+		return paymentSystem;
+	}
+
+	IStatisticCollector getStatisticCollector() {
+		return statisticCollector;
+	}
+
+	public IDataAccess getDataAccess() {
+		return dataAccess;
+	}
+
+	IBuildBot getBuildbot() {
+		return buildbot;
+	}
+
+	private IAuthorizationSystem authorizationSystem;
+	private IAlgorithmControlSystem algorithmControlSystem;
+	private IPaymentSystem paymentSystem;
+	private IStatisticCollector statisticCollector;
+	private IDataAccess dataAccess;
+	private IBuildBot buildbot;
+	private Connector connector;
 }

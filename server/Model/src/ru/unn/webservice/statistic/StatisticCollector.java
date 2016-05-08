@@ -1,7 +1,6 @@
 package ru.unn.webservice.statistic;
 
-import ru.unn.webservice.server.GetStatisticRequest;
-import ru.unn.webservice.server.GetStatisticResponse;
+import ru.unn.webservice.infrastructure.*;
 import ru.unn.webservice.storage.*;
 
 import java.util.ArrayList;
@@ -13,9 +12,17 @@ public class StatisticCollector implements IStatisticCollector {
     }
 
     @Override
-    public GetStatisticResponse getStatistic(GetStatisticRequest request) {
+    public IResponse process(IRequest request) {
+        if (request instanceof GetStatisticRequest) {
+            return getStatistic((GetStatisticRequest)request);
+        } else {
+            return null;
+        }
+    }
+
+    private GetStatisticResponse getStatistic(GetStatisticRequest request) {
         LoadStatDataResponse response = (LoadStatDataResponse)dataAccess.process(
-                                         new LoadStatDataRequest());
+                new LoadStatDataRequest());
         if (!response.status.equals("OK")) {
             return new GetStatisticResponse(null, "FAIL");
         }

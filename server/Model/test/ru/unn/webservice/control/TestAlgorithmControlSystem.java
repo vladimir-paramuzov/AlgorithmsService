@@ -4,9 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
+import ru.unn.webservice.infrastructure.*;
 import ru.unn.webservice.payment.IPaymentSystem;
 import ru.unn.webservice.payment.PaymentSystemEmulator;
-import ru.unn.webservice.server.*;
 import ru.unn.webservice.statistic.IStatisticCollector;
 import ru.unn.webservice.statistic.StatisticCollector;
 import ru.unn.webservice.storage.*;
@@ -30,8 +30,8 @@ public class TestAlgorithmControlSystem {
 
     @Test
     public void canDownloadAlgorithm() {
-        DownloadResponse response = (DownloadResponse)algorithmControlSystem.process(
-                                                      new DownloadRequest("testUser", "alg1"));
+        DownloadAlgorithmResponse response = (DownloadAlgorithmResponse)algorithmControlSystem.process(
+                                                      new DownloadAlgorithmRequest("testUser", "alg1"));
 
         assertEquals("OK", response.status);
         assertEquals(testData.alg1, response.algorithm);
@@ -39,8 +39,8 @@ public class TestAlgorithmControlSystem {
 
     @Test
     public void cantDownloadNotBoughtAlgorithm() {
-        DownloadResponse response = (DownloadResponse)algorithmControlSystem.process(
-                                                      new DownloadRequest("testUser", "alg2"));
+        DownloadAlgorithmResponse response = (DownloadAlgorithmResponse)algorithmControlSystem.process(
+                                                      new DownloadAlgorithmRequest("testUser", "alg2"));
 
         assertEquals("ALGORITHM IS NOT BOUGHT", response.status);
         assertNull(response.algorithm);
@@ -51,8 +51,8 @@ public class TestAlgorithmControlSystem {
         ArrayList<String> purchasedAlgorithms = testData.user.purchasedAlgorithms;
         purchasedAlgorithms.add("alg2");
 
-        BuyResponse response = (BuyResponse)algorithmControlSystem.process(
-                new BuyRequest("testUser", "alg2"));
+        BuyAlgorithmResponse response = (BuyAlgorithmResponse)algorithmControlSystem.process(
+                new BuyAlgorithmRequest("testUser", "alg2"));
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
                 new LoadUserDataRequest("testUser"));
 
@@ -63,8 +63,8 @@ public class TestAlgorithmControlSystem {
 
     @Test
     public void cantBuyAlgorithmWhenNotEnoughMoney() {
-        BuyResponse response = (BuyResponse)algorithmControlSystem.process(
-                new BuyRequest("testUser", "alg3"));
+        BuyAlgorithmResponse response = (BuyAlgorithmResponse)algorithmControlSystem.process(
+                new BuyAlgorithmRequest("testUser", "alg3"));
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
                 new LoadUserDataRequest("testUser"));
 
@@ -75,8 +75,8 @@ public class TestAlgorithmControlSystem {
 
     @Test
     public void cantBuyAlgorithmWhenItAlreadyBought() {
-        BuyResponse response = (BuyResponse)algorithmControlSystem.process(
-                new BuyRequest("testUser", "alg1"));
+        BuyAlgorithmResponse response = (BuyAlgorithmResponse)algorithmControlSystem.process(
+                new BuyAlgorithmRequest("testUser", "alg1"));
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
                 new LoadUserDataRequest("testUser"));
 
@@ -90,22 +90,22 @@ public class TestAlgorithmControlSystem {
         Algorithm algorithm = testData.alg1;
         algorithm.name = "alg4";
 
-        AddResponse addResponse = (AddResponse)algorithmControlSystem.process(
-                                            new AddRequest(algorithm));
+        AddAlgorithmResponse addAlgorithmResponse = (AddAlgorithmResponse)algorithmControlSystem.process(
+                                            new AddAlgorithmRequest(algorithm));
 
         LoadAlgorithmDataResponse algorithmResponse = (LoadAlgorithmDataResponse)dataAccess.process(
                 new LoadAlgorithmDataRequest(algorithm.name));
 
-        assertEquals("OK", addResponse.status);
+        assertEquals("OK", addAlgorithmResponse.status);
         assertEquals("OK", algorithmResponse.status);
     }
 
     @Test
     public void cantAddExistingAlgorithm() {
-        AddResponse addResponse = (AddResponse)algorithmControlSystem.process(
-                                            new AddRequest(testData.alg1));
+        AddAlgorithmResponse addAlgorithmResponse = (AddAlgorithmResponse)algorithmControlSystem.process(
+                                            new AddAlgorithmRequest(testData.alg1));
 
-        assertEquals("ALGORITHM ALREADY EXISTS", addResponse.status);
+        assertEquals("ALGORITHM ALREADY EXISTS", addAlgorithmResponse.status);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class TestAlgorithmControlSystem {
         ArrayList<String> tags = new ArrayList<>();
         tags.add("tag1");
         tags.add("tag2");
-        SearchAlgorithmsRequest request = new SearchAlgorithmsRequest(tags);
+        SearchAlgorithmRequest request = new SearchAlgorithmRequest(tags);
 
         SearchAlgorithmResponse response = (SearchAlgorithmResponse)algorithmControlSystem.process(request);
 

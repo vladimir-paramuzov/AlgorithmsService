@@ -1,6 +1,4 @@
-package ru.unn.webservice.server;
-
-import ru.unn.webservice.server.IRequest;
+package ru.unn.webservice.infrastructure;
 
 public class AuthorizationRequest implements IRequest {
     public String login;

@@ -4,14 +4,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.search.SearchSystem;
-import ru.unn.webservice.server.ChangeBalanceRequest;
-import ru.unn.webservice.server.ChangeBalanceResponse;
-import ru.unn.webservice.server.SearchAlgorithmResponse;
-import ru.unn.webservice.server.SearchAlgorithmsRequest;
+import ru.unn.webservice.infrastructure.User;
+import ru.unn.webservice.infrastructure.ChangeBalanceRequest;
+import ru.unn.webservice.infrastructure.ChangeBalanceResponse;
 import ru.unn.webservice.storage.*;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -30,7 +26,7 @@ public class TestPaymentSystem {
         int delta = 10;
         ChangeBalanceRequest request = new ChangeBalanceRequest(delta, "testAdmin");
 
-        ChangeBalanceResponse response = paymentSystem.changeBalance(request);
+        ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
         assertEquals("OK", response.status);
@@ -42,7 +38,7 @@ public class TestPaymentSystem {
         int delta = -10;
         ChangeBalanceRequest request = new ChangeBalanceRequest(delta, "testAdmin");
 
-        ChangeBalanceResponse response = paymentSystem.changeBalance(request);
+        ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
         assertEquals("OK", response.status);
@@ -54,7 +50,7 @@ public class TestPaymentSystem {
         int delta = -310;
         ChangeBalanceRequest request = new ChangeBalanceRequest(delta, "testAdmin");
 
-        ChangeBalanceResponse response = paymentSystem.changeBalance(request);
+        ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
         assertNotEquals("OK", response.status);

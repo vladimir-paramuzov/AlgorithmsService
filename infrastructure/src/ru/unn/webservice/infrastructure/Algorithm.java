@@ -1,4 +1,4 @@
-package ru.unn.webservice.storage;
+package ru.unn.webservice.infrastructure;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package ru.unn.webservice.storage;
 
-import java.util.ArrayList;
+import ru.unn.webservice.infrastructure.Algorithm;
 
 public class StoreAlgorithmDataRequest implements IDataRequest{
     public Algorithm algorithm;

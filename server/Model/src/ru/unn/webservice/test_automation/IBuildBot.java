@@ -1,7 +1,7 @@
 package ru.unn.webservice.test_automation;
 
-import ru.unn.webservice.server.TestAlgorithmRequest;
-import ru.unn.webservice.server.TestAlgorithmResponse;
+import ru.unn.webservice.infrastructure.IRequest;
+import ru.unn.webservice.infrastructure.IResponse;
 
 import java.util.ArrayList;
 
@@ -24,5 +24,6 @@ public interface IBuildBot {
     ArrayList<IBuildSystem> buildSystems = new ArrayList<>();
     ArrayList<ITestSystem> testSystems   = new ArrayList<>();
 
-    TestAlgorithmResponse process(TestAlgorithmRequest request);
+    IResponse process(IRequest request);
+    STATUS getStatus();
 }

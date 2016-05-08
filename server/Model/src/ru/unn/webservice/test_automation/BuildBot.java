@@ -1,15 +1,19 @@
 package ru.unn.webservice.test_automation;
 
-import ru.unn.webservice.server.TestAlgorithmRequest;
-import ru.unn.webservice.server.TestAlgorithmResponse;
+import ru.unn.webservice.infrastructure.IRequest;
+import ru.unn.webservice.infrastructure.IResponse;
+import ru.unn.webservice.infrastructure.TestAlgorithmRequest;
+import ru.unn.webservice.infrastructure.TestAlgorithmResponse;
 import ru.unn.webservice.storage.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import static ru.unn.webservice.test_automation.IBuildBot.STATUS.*;
 
 public class BuildBot implements IBuildBot {
     public BuildBot(IDataAccess dataAccess) {
+        status = FREE;
         this.dataAccess = dataAccess;
 
         IBuildSystem cppBuilder = new CPPBuildSystem();
@@ -20,12 +24,22 @@ public class BuildBot implements IBuildBot {
     }
 
     @Override
-    public TestAlgorithmResponse process(TestAlgorithmRequest request) {
+    public IResponse process(IRequest request) {
+        if (request instanceof TestAlgorithmRequest) {
+            return testAlgorithm((TestAlgorithmRequest)request);
+        } else {
+            return null;
+        }
+    }
+
+    private TestAlgorithmResponse testAlgorithm(TestAlgorithmRequest request) {
         try {
+            status = BUSY;
             LoadAlgorithmDataResponse response = (LoadAlgorithmDataResponse)dataAccess.process(
-                    new LoadAlgorithmDataRequest(request.algorithmName));
+                                                  new LoadAlgorithmDataRequest(request.algorithmName));
 
             if (!response.status.equals("OK")) {
+                status = FREE;
                 return new TestAlgorithmResponse(null, response.status);
             }
 
@@ -38,6 +52,7 @@ public class BuildBot implements IBuildBot {
             }
 
             if (builder == null) {
+                status = FREE;
                 return new TestAlgorithmResponse(null, response.algorithm.lang + " BUILD SYSTEM NOT EXISTS");
             }
 
@@ -54,6 +69,7 @@ public class BuildBot implements IBuildBot {
             String executablePath = dataAccess.getAlgorithmsPath() + response.algorithm.name + "/build/prog.a";
             File executableFile = new File(executablePath);
             if (!executableFile.exists()) {
+                status = FREE;
                 return new TestAlgorithmResponse(buildLog, "BUILD FAILED");
             }
 
@@ -67,6 +83,7 @@ public class BuildBot implements IBuildBot {
             }
 
             if (tester == null) {
+                status = FREE;
                 return new TestAlgorithmResponse(null, response.algorithm.lang + " TEST SYSTEM NOT EXISTS");
             }
 
@@ -84,23 +101,23 @@ public class BuildBot implements IBuildBot {
             byte[] testLog = tester.test(executablePath, testDataPath);
 
             deleteDirectory(buildDir);
+            status = FREE;
             return new TestAlgorithmResponse(testLog, "OK");
         } catch (Exception ex) {
+            status = FREE;
             return new TestAlgorithmResponse(null, "FAIL");
         }
-
     }
 
     static boolean deleteDirectory(File directory) {
         if(directory.exists()){
             File[] files = directory.listFiles();
-            if(null!=files){
-                for(int i=0; i<files.length; i++) {
-                    if(files[i].isDirectory()) {
-                        deleteDirectory(files[i]);
-                    }
-                    else {
-                        files[i].delete();
+            if(null != files){
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteDirectory(file);
+                    } else {
+                        file.delete();
                     }
                 }
             }
@@ -108,5 +125,11 @@ public class BuildBot implements IBuildBot {
         return (directory.delete());
     }
 
-    IDataAccess dataAccess;
+    @Override
+    public STATUS getStatus() {
+        return status;
+    }
+
+    private STATUS status;
+    private IDataAccess dataAccess;
 }
