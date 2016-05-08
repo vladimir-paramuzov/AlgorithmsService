@@ -4,8 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.server.ChangeBalanceRequest;
-import ru.unn.webservice.server.ChangeBalanceResponse;
+import ru.unn.webservice.infrastructure.User;
+import ru.unn.webservice.infrastructure.ChangeBalanceRequest;
+import ru.unn.webservice.infrastructure.ChangeBalanceResponse;
 import ru.unn.webservice.storage.*;
 
 import static org.junit.Assert.assertEquals;

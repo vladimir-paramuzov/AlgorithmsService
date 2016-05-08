@@ -1,19 +1,19 @@
 package ru.unn.webservice;
 
-import ru.unn.webservice.storage.Algorithm;
+import ru.unn.webservice.infrastructure.Algorithm;
 import ru.unn.webservice.storage.DataAccess;
-import ru.unn.webservice.storage.Statistic;
-import ru.unn.webservice.storage.User;
+import ru.unn.webservice.infrastructure.Statistic;
+import ru.unn.webservice.infrastructure.User;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static ru.unn.webservice.storage.Language.CPP;
-import static ru.unn.webservice.storage.User.TYPE.ADMIN;
-import static ru.unn.webservice.storage.User.TYPE.DEVELOPER;
-import static ru.unn.webservice.storage.User.TYPE.USER;
+import static ru.unn.webservice.infrastructure.Language.CPP;
+import static ru.unn.webservice.infrastructure.User.TYPE.ADMIN;
+import static ru.unn.webservice.infrastructure.User.TYPE.DEVELOPER;
+import static ru.unn.webservice.infrastructure.User.TYPE.USER;
 
 public class TestDataInitializer {
     public TestDataInitializer(DataAccess dataAccess) {

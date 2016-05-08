@@ -4,11 +4,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
+import ru.unn.webservice.infrastructure.Algorithm;
+import ru.unn.webservice.infrastructure.Statistic;
+import ru.unn.webservice.infrastructure.User;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static ru.unn.webservice.storage.Language.*;
+import static ru.unn.webservice.infrastructure.Language.*;
 
 public class TestDataAccess {
 

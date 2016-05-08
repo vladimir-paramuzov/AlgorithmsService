@@ -1,6 +1,4 @@
-package ru.unn.webservice.server;
-
-import ru.unn.webservice.storage.Algorithm;
+package ru.unn.webservice.infrastructure;
 
 import java.util.ArrayList;
 

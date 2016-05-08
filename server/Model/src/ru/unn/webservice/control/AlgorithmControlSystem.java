@@ -1,7 +1,7 @@
 package ru.unn.webservice.control;
 
+import ru.unn.webservice.infrastructure.*;
 import ru.unn.webservice.payment.IPaymentSystem;
-import ru.unn.webservice.server.*;
 import ru.unn.webservice.statistic.IStatisticCollector;
 import ru.unn.webservice.storage.*;
 

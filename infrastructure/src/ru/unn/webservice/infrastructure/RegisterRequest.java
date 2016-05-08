@@ -1,6 +1,4 @@
-package ru.unn.webservice.server;
-
-import ru.unn.webservice.storage.User;
+package ru.unn.webservice.infrastructure;
 
 public class RegisterRequest implements IRequest {
     public String login;

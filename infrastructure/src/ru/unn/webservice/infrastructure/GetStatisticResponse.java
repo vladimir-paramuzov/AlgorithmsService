@@ -1,6 +1,4 @@
-package ru.unn.webservice.server;
-
-import ru.unn.webservice.storage.Statistic;
+package ru.unn.webservice.infrastructure;
 
 public class GetStatisticResponse implements IResponse {
     public Statistic statistic;

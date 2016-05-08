@@ -1,4 +1,4 @@
-package ru.unn.webservice.server;
+package ru.unn.webservice.infrastructure;
 
 public class BuyAlgorithmRequest implements IRequest {
     public String username;

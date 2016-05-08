@@ -1,4 +1,4 @@
-package ru.unn.webservice.server;
+package ru.unn.webservice.infrastructure;
 
 public class TestAlgorithmRequest implements IRequest {
     public String algorithmName;

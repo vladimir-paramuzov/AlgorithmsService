@@ -1,5 +1,7 @@
 package ru.unn.webservice.storage;
 
+import ru.unn.webservice.infrastructure.Algorithm;
+
 import java.util.ArrayList;
 
 public class LoadAlgorithmsListDataResponse implements IDataResponse {

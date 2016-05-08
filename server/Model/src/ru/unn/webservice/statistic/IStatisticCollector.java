@@ -1,7 +1,7 @@
 package ru.unn.webservice.statistic;
 
-import ru.unn.webservice.server.IRequest;
-import ru.unn.webservice.server.IResponse;
+import ru.unn.webservice.infrastructure.IRequest;
+import ru.unn.webservice.infrastructure.IResponse;
 
 import java.util.Date;
 

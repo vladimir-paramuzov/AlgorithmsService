@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
-import ru.unn.webservice.server.GetStatisticRequest;
-import ru.unn.webservice.server.GetStatisticResponse;
+import ru.unn.webservice.infrastructure.GetStatisticRequest;
+import ru.unn.webservice.infrastructure.GetStatisticResponse;
 import ru.unn.webservice.storage.DataAccess;
 
 import java.util.Calendar;

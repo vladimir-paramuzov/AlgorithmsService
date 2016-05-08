@@ -1,6 +1,6 @@
 package ru.unn.webservice.storage;
 
-import javax.swing.plaf.synth.SynthEditorPaneUI;
+import ru.unn.webservice.infrastructure.Statistic;
 
 public class LoadStatDataResponse implements IDataResponse {
     public Statistic statistic;

@@ -1,5 +1,7 @@
 package ru.unn.webservice.storage;
 
+import ru.unn.webservice.infrastructure.User;
+
 import java.util.ArrayList;
 
 public class LoadUsersListDataResponse implements IDataResponse {

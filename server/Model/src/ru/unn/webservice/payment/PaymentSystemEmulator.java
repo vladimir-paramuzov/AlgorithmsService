@@ -1,9 +1,9 @@
 package ru.unn.webservice.payment;
 
-import ru.unn.webservice.server.ChangeBalanceRequest;
-import ru.unn.webservice.server.ChangeBalanceResponse;
-import ru.unn.webservice.server.IRequest;
-import ru.unn.webservice.server.IResponse;
+import ru.unn.webservice.infrastructure.ChangeBalanceRequest;
+import ru.unn.webservice.infrastructure.ChangeBalanceResponse;
+import ru.unn.webservice.infrastructure.IRequest;
+import ru.unn.webservice.infrastructure.IResponse;
 import ru.unn.webservice.storage.*;
 
 public class PaymentSystemEmulator implements IPaymentSystem {

@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.webservice.TestDataInitializer;
+import ru.unn.webservice.infrastructure.AuthorizationRequest;
+import ru.unn.webservice.infrastructure.AuthorizationResponse;
 import ru.unn.webservice.storage.DataAccess;
 
 import java.io.ObjectInputStream;

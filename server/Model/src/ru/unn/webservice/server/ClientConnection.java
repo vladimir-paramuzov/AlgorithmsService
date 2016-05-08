@@ -1,5 +1,7 @@
 package ru.unn.webservice.server;
 
+import ru.unn.webservice.infrastructure.*;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -21,8 +23,8 @@ class ClientConnection extends Thread {
                     if ((request instanceof AuthorizationRequest) ||
                         (request instanceof RegisterRequest)) {
                        oos.writeObject(server.getAuthorizationSystem().process(request));
-                    } else if ((request instanceof AddAlgorithmRequest     ) ||
-                               (request instanceof BuyAlgorithmRequest     ) ||
+                    } else if ((request instanceof AddAlgorithmRequest) ||
+                               (request instanceof BuyAlgorithmRequest) ||
                                (request instanceof DownloadAlgorithmRequest) ||
                                (request instanceof SearchAlgorithmRequest  )) {
                         oos.writeObject(server.getAlgorithmControlSystem().process(request));

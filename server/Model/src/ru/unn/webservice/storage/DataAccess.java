@@ -1,5 +1,9 @@
 package ru.unn.webservice.storage;
 
+import ru.unn.webservice.infrastructure.Algorithm;
+import ru.unn.webservice.infrastructure.Statistic;
+import ru.unn.webservice.infrastructure.User;
+
 import java.io.*;
 import java.util.ArrayList;
 

@@ -1,9 +1,9 @@
 package ru.unn.webservice.test_automation;
 
-import ru.unn.webservice.server.IRequest;
-import ru.unn.webservice.server.IResponse;
-import ru.unn.webservice.server.TestAlgorithmRequest;
-import ru.unn.webservice.server.TestAlgorithmResponse;
+import ru.unn.webservice.infrastructure.IRequest;
+import ru.unn.webservice.infrastructure.IResponse;
+import ru.unn.webservice.infrastructure.TestAlgorithmRequest;
+import ru.unn.webservice.infrastructure.TestAlgorithmResponse;
 import ru.unn.webservice.storage.*;
 
 import java.io.BufferedWriter;
