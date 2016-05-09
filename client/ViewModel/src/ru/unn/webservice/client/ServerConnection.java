@@ -13,6 +13,9 @@ public class ServerConnection {
         try {
             final int port = 9999;
             socket = new Socket(InetAddress.getLocalHost(), port);
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.flush();
+            ois = new ObjectInputStream(socket.getInputStream());
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
@@ -21,9 +24,6 @@ public class ServerConnection {
 
     public IResponse send(IRequest request) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.flush();
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             oos.writeObject(request);
             return (IResponse)ois.readObject();
         } catch (Exception ex) {
@@ -32,5 +32,7 @@ public class ServerConnection {
         }
     }
 
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
     private Socket socket;
 }

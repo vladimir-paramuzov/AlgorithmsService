@@ -35,7 +35,7 @@ class ClientConnection extends Thread {
                     } else if (request instanceof TestAlgorithmRequest) {
                         oos.writeObject(server.getBuildbot().process(request));
                     }
-
+//                    oos.flush();
                 }
             }
             ois.close();

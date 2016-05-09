@@ -46,7 +46,7 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
     private DownloadAlgorithmResponse download(DownloadAlgorithmRequest request) {
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
-                                             new LoadUserDataRequest(request.username));
+                                             new LoadUserDataRequest(request.userName));
         if (!userResponse.status.equals("OK")) {
             return new DownloadAlgorithmResponse(null, userResponse.status);
         }
@@ -82,7 +82,7 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
     private BuyAlgorithmResponse buy(BuyAlgorithmRequest request) {
         LoadUserDataResponse userResponse = (LoadUserDataResponse)dataAccess.process(
-                new LoadUserDataRequest(request.username));
+                new LoadUserDataRequest(request.userName));
         if (!userResponse.status.equals("OK")) {
             return new BuyAlgorithmResponse(userResponse.status);
         }
@@ -105,12 +105,12 @@ public class AlgorithmControlSystem implements IAlgorithmControlSystem {
 
         ChangeBalanceResponse balanceResponse = (ChangeBalanceResponse)paymentSystem.process(
                                                  new ChangeBalanceRequest(-algorithm.cost, user.login));
-        if (!balanceResponse.status.equals("OK")) {
-            return new BuyAlgorithmResponse(balanceResponse.status);
+        if (!balanceResponse.getStatus().equals("OK")) {
+            return new BuyAlgorithmResponse(balanceResponse.getStatus());
         }
 
         userResponse = (LoadUserDataResponse)dataAccess.process(
-                new LoadUserDataRequest(request.username));
+                new LoadUserDataRequest(request.userName));
 
         if (!userResponse.status.equals("OK")) {
             dataAccess.process(new StoreUserDataRequest(user));

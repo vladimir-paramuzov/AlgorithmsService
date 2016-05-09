@@ -8,4 +8,8 @@ public class AuthorizationResponse implements IResponse {
         this.user = user;
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
 }
