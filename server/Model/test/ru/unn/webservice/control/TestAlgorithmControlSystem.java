@@ -120,7 +120,7 @@ public class TestAlgorithmControlSystem {
         assertEquals("OK", response.status);
         assertEquals(2, response.algorithmsList.size());
     }
-    
+
     @After
     public void tearDown() {
         testData.clear();
