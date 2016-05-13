@@ -5,39 +5,54 @@ import ru.unn.webservice.infrastructure.Statistic;
 import ru.unn.webservice.infrastructure.User;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.nio.file.Paths;
 
 public class DataAccess implements IDataAccess {
-    public static String DB_PATH = Paths.get("data/").toAbsolutePath().normalize().toString();
-    public static String USERS_PATH = DB_PATH + "/users/";
-    public static String ALGORITHMS_PATH = DB_PATH + "/algorithms/";
-    public static String STATISTIC_PATH = DB_PATH + "/stat/";
+    private Path DB_PATH;
+    private Path USERS_PATH; // = DB_PATH + "/users/";
+    private Path ALGORITHMS_PATH; // = DB_PATH + "/algorithms/";
+    private Path STATISTIC_PATH; // = DB_PATH + "/stat/";
+
+    public DataAccess(Path DB_PATH) {
+        this.DB_PATH = DB_PATH;
+        USERS_PATH = DB_PATH.resolve("users");
+        ALGORITHMS_PATH = DB_PATH.resolve("algorithms");
+        STATISTIC_PATH = DB_PATH.resolve("stat");
+    }
+
+    public DataAccess() {
+        DB_PATH = Paths.get("data/").toAbsolutePath().normalize();
+        USERS_PATH = DB_PATH.resolve("users");
+        ALGORITHMS_PATH = DB_PATH.resolve("algorithms");
+        STATISTIC_PATH = DB_PATH.resolve("stat");
+    }
 
     public IDataResponse process(IDataRequest request) {
         if (request instanceof StoreUserDataRequest) {
-            return (IDataResponse)process((StoreUserDataRequest) request);
+            return process((StoreUserDataRequest) request);
         } else if (request instanceof StoreAlgorithmDataRequest){
-            return (IDataResponse)process((StoreAlgorithmDataRequest)request);
+            return process((StoreAlgorithmDataRequest)request);
         } else if (request instanceof StoreStatDataRequest){
-            return (IDataResponse)process((StoreStatDataRequest)request);
+            return process((StoreStatDataRequest)request);
         } else if (request instanceof LoadUserDataRequest){
-            return (IDataResponse)process((LoadUserDataRequest) request);
+            return process((LoadUserDataRequest) request);
         } else if (request instanceof LoadAlgorithmDataRequest) {
-            return (IDataResponse)process((LoadAlgorithmDataRequest)request);
+            return process((LoadAlgorithmDataRequest)request);
         } else if (request instanceof LoadStatDataRequest) {
-            return (IDataResponse)process((LoadStatDataRequest)request);
+            return process((LoadStatDataRequest)request);
         } else if (request instanceof LoadUsersListDataRequest) {
-            return (IDataResponse)process((LoadUsersListDataRequest)request);
+            return process((LoadUsersListDataRequest)request);
         } else if (request instanceof LoadAlgorithmsListDataRequest) {
-            return (IDataResponse)process((LoadAlgorithmsListDataRequest)request);
+            return process((LoadAlgorithmsListDataRequest)request);
         } else {
             return null;
         }
     }
 
     @Override
-    public String getAlgorithmsPath() {
+    public Path getAlgorithmsPath() {
         return ALGORITHMS_PATH;
     }
 
@@ -86,7 +101,7 @@ public class DataAccess implements IDataAccess {
     private LoadUsersListDataResponse process(LoadUsersListDataRequest request) {
         ArrayList<User> usersList = new ArrayList<>();
 
-        File file = new File(USERS_PATH);
+        File file = new File(USERS_PATH.toString());
         String[] directories = file.list(new FilenameFilter() {
             @Override
             public boolean accept(File current, String name) {
@@ -108,7 +123,7 @@ public class DataAccess implements IDataAccess {
     private LoadAlgorithmsListDataResponse process(LoadAlgorithmsListDataRequest request) {
         ArrayList<Algorithm> algorithmsList = new ArrayList<>();
 
-        File file = new File(ALGORITHMS_PATH);
+        File file = new File(ALGORITHMS_PATH.toString());
         String[] directories = file.list(new FilenameFilter() {
             @Override
             public boolean accept(File current, String name) {
@@ -131,7 +146,7 @@ public class DataAccess implements IDataAccess {
         FileInputStream fstream = null;
         User user = null;
         try {
-            fstream = new FileInputStream(USERS_PATH + username + "/data.bin");
+            fstream = new FileInputStream(USERS_PATH.resolve(username).resolve("data.bin").toString());
             ObjectInputStream ostream = new ObjectInputStream(fstream);
             user = (User)ostream.readObject();
             fstream.close();
@@ -143,7 +158,7 @@ public class DataAccess implements IDataAccess {
 
     public Algorithm readAlgorithm(String algorithmName) {
         try {
-            FileInputStream fstream = new FileInputStream(ALGORITHMS_PATH + algorithmName + "/data.bin");
+            FileInputStream fstream = new FileInputStream(ALGORITHMS_PATH.resolve(algorithmName).resolve("data.bin").toString());
             ObjectInputStream ostream = new ObjectInputStream(fstream);
             Algorithm algorithm = (Algorithm)ostream.readObject();
             fstream.close();
@@ -159,11 +174,11 @@ public class DataAccess implements IDataAccess {
         Statistic statistic = null;
 
         try {
-            File f = new File(STATISTIC_PATH + "stat.bin");
+            File f = new File(STATISTIC_PATH.resolve("stat.bin").toString());
             if(!f.exists()) {
                 statistic = new Statistic();
             } else {
-                FileInputStream fstream = new FileInputStream(STATISTIC_PATH + "stat.bin");
+                FileInputStream fstream = new FileInputStream(STATISTIC_PATH.resolve("stat.bin").toString());
                 ObjectInputStream ostream = new ObjectInputStream(fstream);
                 statistic = (Statistic)ostream.readObject();
                 ostream.close();
@@ -177,7 +192,7 @@ public class DataAccess implements IDataAccess {
     }
 
     public String writeUser(User user) {
-        File path = new File(USERS_PATH + user.login);
+        File path = new File(USERS_PATH.resolve(user.login).toString());
         if (!path.exists()) {
             if (!path.mkdir()) {
                 return "FAIL";
@@ -186,7 +201,7 @@ public class DataAccess implements IDataAccess {
 
         try {
             byte[] data = getBytes(user);
-            OutputStream outputStream = new FileOutputStream(USERS_PATH + user.login + "/data.bin");
+            OutputStream outputStream = new FileOutputStream(USERS_PATH.resolve(user.login).resolve("data.bin").toString());
             outputStream.write(data, 0, data.length);
             outputStream.flush();
             outputStream.close();
@@ -197,7 +212,7 @@ public class DataAccess implements IDataAccess {
     }
 
     public String writeAlgorithm(Algorithm algorithm) {
-        File path = new File(ALGORITHMS_PATH + algorithm.name);
+        File path = new File(ALGORITHMS_PATH.resolve(algorithm.name).toString());
         if (!path.exists()) {
             if (!path.mkdir()) {
                 return "FAIL";
@@ -206,17 +221,18 @@ public class DataAccess implements IDataAccess {
 
         try {
             byte[] data = getBytes(algorithm);
-            OutputStream outputStream = new FileOutputStream (ALGORITHMS_PATH + algorithm.name + "/data.bin");
+            OutputStream outputStream = new FileOutputStream (ALGORITHMS_PATH.resolve(algorithm.name).resolve("data.bin").toString());
             outputStream.write(data, 0, data.length);
             outputStream.flush();
             outputStream.close();
             String decodedSource = new String(algorithm.sourceFile, "UTF-8");
-            BufferedWriter writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/main.cpp"));
+            BufferedWriter writer = new BufferedWriter( new FileWriter(
+                    ALGORITHMS_PATH.resolve(algorithm.name).resolve("main.cpp").toString()));
             writer.write(decodedSource);
             writer.flush();
             writer.close();
             String decodedTests = new String(algorithm.testFile, "UTF-8");
-            writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH + algorithm.name + "/test_data.txt"));
+            writer = new BufferedWriter( new FileWriter(ALGORITHMS_PATH.resolve(algorithm.name).resolve("test_data.txt").toString()));
             writer.write(decodedTests);
             writer.flush();
             writer.close();
@@ -229,7 +245,7 @@ public class DataAccess implements IDataAccess {
     public String writeStatistic(Statistic statistic) {
         try {
             byte[] data = getBytes(statistic);
-            OutputStream outputStream = new FileOutputStream(STATISTIC_PATH + "stat.bin");
+            OutputStream outputStream = new FileOutputStream(STATISTIC_PATH.resolve("stat.bin").toString());
             outputStream.write(data, 0, data.length);
             outputStream.flush();
             outputStream.close();
@@ -240,20 +256,20 @@ public class DataAccess implements IDataAccess {
     }
 
     public void deleteAlgorithms() {
-        File directory = new File(ALGORITHMS_PATH);
+        File directory = new File(ALGORITHMS_PATH.toString());
         deleteDirectory(directory);
         directory.mkdir();
     }
 
     public void deleteStatistic() {
-        File directory = new File(STATISTIC_PATH);
+        File directory = new File(STATISTIC_PATH.toString());
         deleteDirectory(directory);
         directory.mkdir();
     }
 
 
     public void deleteUsers() {
-        File directory = new File(USERS_PATH);
+        File directory = new File(USERS_PATH.toString());
         deleteDirectory(directory);
         directory.mkdir();
     }

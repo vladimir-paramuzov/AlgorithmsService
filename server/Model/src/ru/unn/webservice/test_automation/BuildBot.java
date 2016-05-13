@@ -9,6 +9,8 @@ import ru.unn.webservice.storage.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Path;
+
 import static ru.unn.webservice.test_automation.IBuildBot.STATUS.*;
 
 public class BuildBot implements IBuildBot {
@@ -56,17 +58,17 @@ public class BuildBot implements IBuildBot {
                 return new TestAlgorithmResponse(null, response.algorithm.lang + " BUILD SYSTEM NOT EXISTS");
             }
 
-            File buildDir = new File(dataAccess.getAlgorithmsPath() + response.algorithm.name + "/build/");
+            File buildDir = new File(dataAccess.getAlgorithmsPath().resolve(response.algorithm.name).resolve("build").toString());
             if (buildDir.exists()) {
                 deleteDirectory(buildDir);
             }
 
             buildDir.mkdir();
-            String sourceFilePath = dataAccess.getAlgorithmsPath() + response.algorithm.name + "/main.cpp";
-            String outFilePath = dataAccess.getAlgorithmsPath() + response.algorithm.name + "/build/prog.a";
+            String sourceFilePath = dataAccess.getAlgorithmsPath().resolve(response.algorithm.name).resolve("main.cpp").toString();
+            String outFilePath = dataAccess.getAlgorithmsPath().resolve(response.algorithm.name).resolve("build").resolve("prog.a").toString();
             byte[] buildLog = builder.build(sourceFilePath, outFilePath);
 
-            String executablePath = dataAccess.getAlgorithmsPath() + response.algorithm.name + "/build/prog.a";
+            String executablePath = outFilePath;
             File executableFile = new File(executablePath);
             if (!executableFile.exists()) {
                 status = FREE;
@@ -87,18 +89,19 @@ public class BuildBot implements IBuildBot {
                 return new TestAlgorithmResponse(null, response.algorithm.lang + " TEST SYSTEM NOT EXISTS");
             }
 
-            String testDataPath =  dataAccess.getAlgorithmsPath() + response.algorithm.name;
+            Path testDataPath =  dataAccess.getAlgorithmsPath().resolve(response.algorithm.name);
             if (request.userTestData != null) {
-                testDataPath += "/build";
+                testDataPath = testDataPath.resolve("build").resolve("test_data.txt");
                 String decodedSource = new String(request.userTestData, "UTF-8");
-                BufferedWriter writer = new BufferedWriter(new FileWriter(testDataPath + "/test_data.txt"));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(testDataPath.toString()));
                 writer.write(decodedSource);
                 writer.flush();
                 writer.close();
+            } else {
+                testDataPath = testDataPath.resolve("test_data.txt");
             }
-            testDataPath += "/test_data.txt";
 
-            byte[] testLog = tester.test(executablePath, testDataPath);
+            byte[] testLog = tester.test(executablePath, testDataPath.toString());
 
             deleteDirectory(buildDir);
             status = FREE;
