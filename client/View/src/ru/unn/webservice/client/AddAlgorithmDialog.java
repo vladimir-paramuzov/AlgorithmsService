@@ -1,18 +1,13 @@
 package ru.unn.webservice.client;
 
-import com.sun.org.apache.xml.internal.security.algorithms.JCEMapper;
 import ru.unn.webservice.infrastructure.Algorithm;
 import ru.unn.webservice.infrastructure.Language;
-import ru.unn.webservice.infrastructure.Statistic;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
