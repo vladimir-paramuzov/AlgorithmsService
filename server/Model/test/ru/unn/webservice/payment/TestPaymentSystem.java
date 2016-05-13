@@ -15,7 +15,7 @@ import static org.junit.Assert.assertNotEquals;
 public class TestPaymentSystem {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
         paymentSystem = new PaymentSystemEmulator(dataAccess);
         testData = new TestDataInitializer((DataAccess)dataAccess);
         testData.init();

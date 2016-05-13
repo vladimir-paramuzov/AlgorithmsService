@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNull;
 public class TestAlgorithmControlSystem {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
         statisticCollector = new StatisticCollector(dataAccess);
         paymentSystem = new PaymentSystemEmulator(dataAccess);
         algorithmControlSystem = new AlgorithmControlSystem(dataAccess, statisticCollector, paymentSystem);
