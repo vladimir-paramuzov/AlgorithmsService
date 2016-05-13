@@ -6,28 +6,72 @@ import ru.unn.webservice.infrastructure.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static ru.unn.webservice.infrastructure.Language.CPP;
+import java.util.Date;
 
 public class Client implements IViewModel {
     private User user;
     private String login;
     private String password;
     private String searchField;
-    private String browserField;
+    private String showAlgorithmField;
     private boolean isDeveloper;
     private boolean isAuthorizationPanelVisible;
     private boolean isUserProfilePanelVisible;
     private boolean isStartPanelVisible;
     private boolean isInputPanelVisible;
+    private boolean isDeveloperPanelVisible;
+    private boolean isAdminPanelVisible;
+    private Date from;
+    private Date to;
     private ArrayList<String> searchResultList;
+    private ArrayList<Algorithm> searchAlgorithmsList;
+    private int selectedAlgorithmIndex;
+    private boolean isSearchPanelVisible;
 
-    public String getBrowserField() {
-        return browserField;
+
+    private Statistic statistic;
+
+    public Date getFrom() {
+        return from;
     }
 
-    public void setBrowserField(String browserField) {
-        this.browserField = browserField;
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
+    }
+
+    public Algorithm getAlgorithmToAdd() {
+        return algorithmToAdd;
+    }
+
+    public void setAlgorithmToAdd(Algorithm algorithmToAdd) {
+        this.algorithmToAdd = algorithmToAdd;
+    }
+
+    public Algorithm getAlgorithmToShow() {
+        return algorithmToShow;
+    }
+
+    public void setAlgorithmToShow(Algorithm algorithmToShow) {
+        this.algorithmToShow = algorithmToShow;
+    }
+
+    private Algorithm algorithmToAdd;
+    private Algorithm algorithmToShow;
+
+    public String getShowAlgorithmField() {
+        return showAlgorithmField;
+    }
+
+    public void setShowAlgorithmField(String showAlgorithmField) {
+        this.showAlgorithmField = showAlgorithmField;
     }
 
     public String getSearchField() {
@@ -155,6 +199,9 @@ public class Client implements IViewModel {
             isAuthorizationPanelVisible = false;
             isUserProfilePanelVisible = true;
             status = "";
+            isDeveloperPanelVisible = user.type == User.TYPE.DEVELOPER || user.type == User.TYPE.ADMIN;
+            isAdminPanelVisible = user.type == User.TYPE.ADMIN;
+            isSearchPanelVisible = true;
             return;
         }
 
@@ -192,13 +239,18 @@ public class Client implements IViewModel {
         isUserProfilePanelVisible = false;
         isInputPanelVisible = false;
         isStartPanelVisible = true;
+        isSearchPanelVisible = false;
+        isDeveloperPanelVisible = false;
+        isAdminPanelVisible = false;
     }
 
     public void search() {
-        ArrayList<String> tags = new ArrayList<String>(Arrays.asList(searchField.split(" ")));
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList(searchField.split(" ")));
         SearchAlgorithmRequest request = new SearchAlgorithmRequest(tags);
         SearchAlgorithmResponse response = (SearchAlgorithmResponse)serverConnection.send(request);
         searchResultList.clear();
+
+        searchAlgorithmsList = response.getAlgorithmsList();
 
         if (response.getStatus().equals("OK")) {
             for (Algorithm algorithm : response.getAlgorithmsList()) {
@@ -223,5 +275,103 @@ public class Client implements IViewModel {
         searchResultList.forEach(model::addElement);
 
         return model;
+    }
+
+    public void updateUser() {
+        AuthorizationRequest request = new AuthorizationRequest(login, password);
+        AuthorizationResponse response = (AuthorizationResponse)serverConnection.send(request);
+        status = response.getStatus();
+    }
+
+    @Override
+    public void addAlgorithm() {
+        AddAlgorithmRequest request = new AddAlgorithmRequest(algorithmToAdd);
+        AddAlgorithmResponse response = (AddAlgorithmResponse)serverConnection.send(request);
+        status = response.getStatus();
+    }
+
+    @Override
+    public void setIsDeveloperPanelVisible(boolean visible) {
+        isDeveloperPanelVisible = visible;
+    }
+
+    @Override
+    public void setisAdminPanelVisible(boolean visible) {
+        isAdminPanelVisible = visible;
+    }
+
+    @Override
+    public boolean getIsDeveloperPanelVisible() {
+        return isDeveloperPanelVisible;
+    }
+
+    @Override
+    public boolean getIsAdminPanelVisible() {
+        return isAdminPanelVisible;
+    }
+
+
+    @Override
+    public void getStatistic() {
+        GetStatisticRequest request = new GetStatisticRequest(from, to);
+        GetStatisticResponse response = (GetStatisticResponse)serverConnection.send(request);
+        if (status.equals("OK")) {
+            statistic = response.getStatistic();
+            return;
+        }
+        status = response.getStatus();
+    }
+
+    @Override
+    public String getDownloadsCount() {
+        if (statistic == null) {
+            return "";
+        }
+        return Integer.toString(statistic.getDownloadsCount());
+    }
+
+    @Override
+    public String getPurchasesCount() {
+        if (statistic == null) {
+            return "";
+        }
+        return Integer.toString(statistic.getPurchasesCount());
+    }
+
+    @Override
+    public String getStatisticDateLabel() {
+        if (statistic == null) {
+            return "";
+        }
+        return "<html>Stats from <br> <pre>    " + from.toString() + "</pre>to <br><pre>    " + to.toString() + "</pre>";
+    }
+
+    @Override
+    public void setSelectedAlgorithmIndex(int selectedIndex) {
+        selectedAlgorithmIndex = selectedIndex;
+    }
+
+    @Override
+    public void getSelectedAlgorithm() {
+        if (selectedAlgorithmIndex >= 0 && selectedAlgorithmIndex < searchAlgorithmsList.size()) {
+            Algorithm algorithm = searchAlgorithmsList.get(selectedAlgorithmIndex);
+            showAlgorithmField =
+                    "<html>" +
+                    "Name: <br> <pre>    " + algorithm.name + "</pre>" +
+                    "Description: <br><pre>    " + algorithm.description + "</pre>" +
+                    "Cost: <br><pre>    " + Integer.toString(algorithm.cost) + "</pre>" +
+                    "Owner: <br><pre>    " + algorithm.owner + "</pre>" +
+                    "Tags: <br><pre>    " + algorithm.tags.toString() + "</pre>";
+        }
+    }
+
+    @Override
+    public void setIsSearchPanelVisible(boolean visible) {
+        isSearchPanelVisible = visible;
+    }
+
+    @Override
+    public boolean getIsSearchPanelVisible() {
+        return isSearchPanelVisible;
     }
 }

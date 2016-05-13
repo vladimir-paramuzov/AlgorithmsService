@@ -6,4 +6,8 @@ public class AddAlgorithmResponse implements IResponse {
     public AddAlgorithmResponse(String status) {
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
 }
