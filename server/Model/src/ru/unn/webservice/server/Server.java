@@ -13,11 +13,12 @@ import ru.unn.webservice.storage.IDataAccess;
 import ru.unn.webservice.test_automation.BuildBot;
 import ru.unn.webservice.test_automation.IBuildBot;
 
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Server {
     Server() {
-        dataAccess = new DataAccess();
+		dataAccess = new DataAccess();
         authorizationSystem = new AuthorizationSystem(dataAccess);
         paymentSystem = new PaymentSystemEmulator(dataAccess);
         statisticCollector = new StatisticCollector(dataAccess);
@@ -27,9 +28,15 @@ public class Server {
         isTestMode = false;
     }
 
-    Server(boolean isTestMode) {
-        this();
-        this.isTestMode = isTestMode;
+    Server(Path dbPath) {
+        this.isTestMode = true;
+		dataAccess = new DataAccess(dbPath);
+		authorizationSystem = new AuthorizationSystem(dataAccess);
+		paymentSystem = new PaymentSystemEmulator(dataAccess);
+		statisticCollector = new StatisticCollector(dataAccess);
+		buildbot = new BuildBot(dataAccess);
+		algorithmControlSystem = new AlgorithmControlSystem(dataAccess, statisticCollector, paymentSystem);
+		connector = new Connector(this);
     }
 
 	public static void main(final String[] args) {

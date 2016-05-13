@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class TestBuildBot {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
         buildbot = new BuildBot(dataAccess);
         testData = new TestDataInitializer(dataAccess);
         testData.init();

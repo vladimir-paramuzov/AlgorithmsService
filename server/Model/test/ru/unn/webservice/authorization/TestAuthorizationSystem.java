@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNull;
 public class TestAuthorizationSystem {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
         authorizationSystem = new AuthorizationSystem(dataAccess);
         testData = new TestDataInitializer((DataAccess)dataAccess);
         testData.init();

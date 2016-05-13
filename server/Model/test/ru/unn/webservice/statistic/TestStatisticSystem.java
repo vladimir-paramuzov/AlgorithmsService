@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class TestStatisticSystem {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
         statisticCollector = new StatisticCollector(dataAccess);
         testData = new TestDataInitializer(dataAccess);
         testData.init();

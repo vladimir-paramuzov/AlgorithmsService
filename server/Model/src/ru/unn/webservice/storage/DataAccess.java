@@ -11,22 +11,40 @@ import java.nio.file.Paths;
 
 public class DataAccess implements IDataAccess {
     private Path DB_PATH;
-    private Path USERS_PATH; // = DB_PATH + "/users/";
-    private Path ALGORITHMS_PATH; // = DB_PATH + "/algorithms/";
-    private Path STATISTIC_PATH; // = DB_PATH + "/stat/";
+    private Path USERS_PATH;
+    private Path ALGORITHMS_PATH;
+    private Path STATISTIC_PATH;
 
     public DataAccess(Path DB_PATH) {
         this.DB_PATH = DB_PATH;
-        USERS_PATH = DB_PATH.resolve("users");
-        ALGORITHMS_PATH = DB_PATH.resolve("algorithms");
-        STATISTIC_PATH = DB_PATH.resolve("stat");
+        File file = new File(DB_PATH.toString());
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        USERS_PATH = this.DB_PATH.resolve("users");
+        ALGORITHMS_PATH = this.DB_PATH.resolve("algorithms");
+        STATISTIC_PATH = this.DB_PATH.resolve("stat");
     }
 
     public DataAccess() {
-        DB_PATH = Paths.get("data/").toAbsolutePath().normalize();
+        DB_PATH = Paths.get("data").toAbsolutePath().normalize().resolve("dataBase");
+        File file = new File(DB_PATH.toString());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
         USERS_PATH = DB_PATH.resolve("users");
+        if (!USERS_PATH.toFile().exists()) {
+            USERS_PATH.toFile().mkdir();
+        }
         ALGORITHMS_PATH = DB_PATH.resolve("algorithms");
+        if (!ALGORITHMS_PATH.toFile().exists()) {
+            ALGORITHMS_PATH.toFile().mkdir();
+        }
         STATISTIC_PATH = DB_PATH.resolve("stat");
+        if (!STATISTIC_PATH.toFile().exists()) {
+            STATISTIC_PATH.toFile().mkdir();
+        }
     }
 
     public IDataResponse process(IDataRequest request) {

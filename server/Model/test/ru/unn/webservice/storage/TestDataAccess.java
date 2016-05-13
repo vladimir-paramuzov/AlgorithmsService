@@ -17,7 +17,7 @@ public class TestDataAccess {
 
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
 
         testData = new TestDataInitializer(dataAccess);
         testData.init();

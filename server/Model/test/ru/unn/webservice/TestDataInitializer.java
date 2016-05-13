@@ -6,6 +6,8 @@ import ru.unn.webservice.infrastructure.Statistic;
 import ru.unn.webservice.infrastructure.User;
 
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +23,7 @@ public class TestDataInitializer {
         developer = new User("testDeveloper", "developer", DEVELOPER, 200, purchasedAlgorithms2);
         admin = new User("testAdmin", "admin", ADMIN, 300, purchasedAlgorithms3);
 
-        alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testUser", 0, CPP);
+        alg1 = new Algorithm("alg1", "superalg1", tags1, sourceFile, testFile, "testDeveloper", 0, CPP);
         alg2 = new Algorithm("alg2", "superalg2", tags2, sourceFile, testFile, "testDeveloper", 20, CPP);
         alg3 = new Algorithm("alg3", "superalg3", tags3, sourceFile, testFile, "testAdmin", 300, CPP);
 
@@ -65,6 +67,7 @@ public class TestDataInitializer {
         dataAccess.deleteStatistic();
     }
 
+    public static Path testDB_Path = Paths.get("data").toAbsolutePath().normalize().resolve("test");
     public Algorithm alg1;
     public Algorithm alg2;
     public Algorithm alg3;

@@ -20,8 +20,8 @@ import static org.junit.Assert.assertNotNull;
 public class TestServer {
     @Before
     public void setUp() {
-        dataAccess = new DataAccess();
-        server = new Server(true);
+        dataAccess = new DataAccess(TestDataInitializer.testDB_Path);
+        server = new Server(TestDataInitializer.testDB_Path);
         testData = new TestDataInitializer(dataAccess);
         testData.init();
         server.run();
