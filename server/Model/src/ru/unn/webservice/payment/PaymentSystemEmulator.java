@@ -24,11 +24,11 @@ public class PaymentSystemEmulator implements IPaymentSystem {
         LoadUserDataResponse response = (LoadUserDataResponse)dataAccess.process(
                 new LoadUserDataRequest(request.username));
         if (!response.status.equals("OK")) {
-            return new ChangeBalanceResponse(response.status);
+            return new ChangeBalanceResponse(null, response.status);
         }
 
         if (response.user.balance + request.delta < 0) {
-            return new ChangeBalanceResponse("NOT ENOUGH MONEY");
+            return new ChangeBalanceResponse(null, "NOT ENOUGH MONEY");
         }
 
         response.user.balance += request.delta;
@@ -36,10 +36,10 @@ public class PaymentSystemEmulator implements IPaymentSystem {
         String status = ((StoreUserDataResponse)dataAccess.process(new StoreUserDataRequest(response.user))).status;
 
         if (!status.equals("OK")) {
-            return new ChangeBalanceResponse(status);
+            return new ChangeBalanceResponse(null, status);
         }
 
-        return new ChangeBalanceResponse("OK");
+        return new ChangeBalanceResponse(response.user, "OK");
     }
 
     private IDataAccess dataAccess;

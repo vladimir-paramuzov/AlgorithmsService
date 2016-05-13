@@ -21,10 +21,10 @@ public class TestServer {
     @Before
     public void setUp() {
         dataAccess = new DataAccess();
-        server = new Server();
+        server = new Server(true);
         testData = new TestDataInitializer(dataAccess);
         testData.init();
-        server.start();
+        server.run();
         while (!server.isConnectorAlive());
         try {
             sleep(500);
@@ -35,7 +35,7 @@ public class TestServer {
 
     @Test
     public void canConnectToServer() throws Exception {
-        Socket socket = new Socket(InetAddress.getLocalHost(), 6666);
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
         socket.close();
 
         assertNotNull(socket);
@@ -43,7 +43,7 @@ public class TestServer {
 
     @Test
     public void canCommunicateWithServer() throws Exception {
-        Socket socket = new Socket(InetAddress.getLocalHost(), 6666);
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
@@ -63,7 +63,7 @@ public class TestServer {
     @After
     public void tearDown() {
         testData.clear();
-        server.interrupt();
+        server.close();
     }
 
     private DataAccess dataAccess;

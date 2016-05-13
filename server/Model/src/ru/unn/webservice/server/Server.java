@@ -15,7 +15,7 @@ import ru.unn.webservice.test_automation.IBuildBot;
 
 import java.util.Scanner;
 
-public class Server extends Thread {
+public class Server {
     Server() {
         dataAccess = new DataAccess();
         authorizationSystem = new AuthorizationSystem(dataAccess);
@@ -24,14 +24,20 @@ public class Server extends Thread {
         buildbot = new BuildBot(dataAccess);
         algorithmControlSystem = new AlgorithmControlSystem(dataAccess, statisticCollector, paymentSystem);
         connector = new Connector(this);
+        isTestMode = false;
+    }
+
+    Server(boolean isTestMode) {
+        this();
+        this.isTestMode = isTestMode;
     }
 
 	public static void main(final String[] args) {
 		Server server = new Server();
 		server.run();
-	}
+    }
 
-	private static void waitForEnter() {
+	private void waitForEnter() {
 		System.out.println("To kill server type 'kill'");
 		Scanner scanner = new Scanner(System.in);
 		String line;
@@ -40,18 +46,19 @@ public class Server extends Thread {
 		}
 	}
 
-    @Override
 	public void run() {
 		connector.start();
-        while (!connector.isAlive());
-        waitForEnter();
-        connector.interrupt();
+		while (!connector.isAlive());
+        if (!isTestMode) {
+            waitForEnter();
+            close();
+        }
+
+		System.out.println("Server killed :(");
 	}
 
-    @Override
-    public void interrupt() {
-        connector.interrupt();
-        super.interrupt();
+    public void close() {
+        connector.close();
     }
 
     boolean isConnectorAlive() {
@@ -81,6 +88,8 @@ public class Server extends Thread {
 	IBuildBot getBuildbot() {
 		return buildbot;
 	}
+
+    private boolean isTestMode;
 
 	private IAuthorizationSystem authorizationSystem;
 	private IAlgorithmControlSystem algorithmControlSystem;

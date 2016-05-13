@@ -7,13 +7,24 @@ sourceSets {
     test.java.srcDir 'test/'
 }
 
+mainClassName = 'ru.unn.webservice.server.Server'
+
 jar {
     manifest {
-        attributes 'Main-Class': 'ru.unn.webservice.server.Server'
+        doFirst {
+            manifest {
+                if (!configurations.runtime.isEmpty()) {
+                    attributes('Class-Path':
+                            configurations.runtime.collect{it.toURI().toString()}.join(' '))
+                }
+            }
+        }
+        manifest {
+            attributes ('Main-Class': 'ru.unn.webservice.server.Server')
+        }
     }
 }
 
-mainClassName = 'ru.unn.webservice.server.Server'
 
 launch4j {
     outfile = 'Server.exe'

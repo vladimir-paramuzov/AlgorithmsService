@@ -29,7 +29,7 @@ public class TestPaymentSystem {
         ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
-        assertEquals("OK", response.status);
+        assertEquals("OK", response.getStatus());
         assertEquals(310, user.balance);
     }
 
@@ -41,7 +41,7 @@ public class TestPaymentSystem {
         ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
-        assertEquals("OK", response.status);
+        assertEquals("OK", response.getStatus());
         assertEquals(290, user.balance);
     }
 
@@ -53,7 +53,7 @@ public class TestPaymentSystem {
         ChangeBalanceResponse response = (ChangeBalanceResponse)paymentSystem.process(request);
 
         User user = ((LoadUserDataResponse)dataAccess.process(new LoadUserDataRequest("testAdmin"))).user;
-        assertNotEquals("OK", response.status);
+        assertNotEquals("OK", response.getStatus());
         assertEquals(300, user.balance);
     }
 

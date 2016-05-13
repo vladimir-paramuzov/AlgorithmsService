@@ -10,4 +10,12 @@ public class SearchAlgorithmResponse implements IResponse {
         this.algorithmsList = algorithmsList;
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public ArrayList<Algorithm> getAlgorithmsList() {
+        return algorithmsList;
+    }
 }

@@ -1,11 +1,11 @@
 package ru.unn.webservice.infrastructure;
 
 public class DownloadAlgorithmRequest implements IRequest {
-    public String username;
+    public String userName;
     public String algorithmName;
 
-    public DownloadAlgorithmRequest(String username, String algorithmName) {
-        this.username = username;
+    public DownloadAlgorithmRequest(String userName, String algorithmName) {
+        this.userName = userName;
         this.algorithmName = algorithmName;
     }
 }

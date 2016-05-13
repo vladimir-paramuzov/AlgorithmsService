@@ -5,5 +5,9 @@ public class RegisterResponse implements IResponse {
     public RegisterResponse(String status) {
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
 }
 

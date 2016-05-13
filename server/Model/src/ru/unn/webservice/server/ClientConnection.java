@@ -14,9 +14,9 @@ class ClientConnection extends Thread {
     @Override
     public void run() {
         try {
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             while (socket.isConnected()) {
                 IRequest request = (IRequest)ois.readObject();
                 if (request != null) {
@@ -35,13 +35,13 @@ class ClientConnection extends Thread {
                     } else if (request instanceof TestAlgorithmRequest) {
                         oos.writeObject(server.getBuildbot().process(request));
                     }
+//                    oos.flush();
                 }
             }
-
             ois.close();
             oos.close();
         } catch (Exception ex) {
-
+            System.out.println(ex.toString());
         }
     }
 
