@@ -5,6 +5,7 @@ import ru.unn.webservice.storage.DataAccess;
 import ru.unn.webservice.infrastructure.Statistic;
 import ru.unn.webservice.infrastructure.User;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,6 +49,11 @@ public class TestDataInitializer {
 
     public void init() {
         clear();
+
+        File path = new File(testDB_Path.toString());
+        if (!path.exists()) {
+            path.mkdirs();
+        }
 
         dataAccess.writeAlgorithm(alg1);
         dataAccess.writeAlgorithm(alg2);
