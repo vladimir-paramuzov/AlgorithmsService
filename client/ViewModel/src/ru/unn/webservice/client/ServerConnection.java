@@ -22,6 +22,15 @@ public class ServerConnection {
 
     }
 
+    public ServerConnection(String ip) throws Exception {
+        final int port = 9999;
+        InetAddress addr = InetAddress.getByName(ip);
+        socket = new Socket(addr, port);
+        oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.flush();
+        ois = new ObjectInputStream(socket.getInputStream());
+    }
+
     public IResponse send(IRequest request) {
         try {
             oos.writeObject(request);

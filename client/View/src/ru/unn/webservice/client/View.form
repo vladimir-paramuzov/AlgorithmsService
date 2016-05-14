@@ -19,6 +19,7 @@
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <focusable value="false"/>
           <visible value="true"/>
         </properties>
         <border type="none"/>
@@ -29,6 +30,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <visible value="false"/>
             </properties>
             <border type="none"/>
@@ -85,7 +87,10 @@
                     <preferred-size width="150" height="50"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                  <focusable value="false"/>
+                </properties>
               </component>
               <component id="a15b3" class="javax.swing.JTextPane" binding="logPane">
                 <constraints>
@@ -93,7 +98,10 @@
                     <preferred-size width="150" height="50"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                  <focusable value="false"/>
+                </properties>
               </component>
             </children>
           </grid>
@@ -103,6 +111,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <visible value="true"/>
             </properties>
             <border type="none"/>
@@ -113,7 +122,9 @@
                     <preferred-size width="150" height="50"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <focusable value="false"/>
+                </properties>
               </component>
             </children>
           </grid>
@@ -125,6 +136,7 @@
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <focusable value="false"/>
           <visible value="false"/>
         </properties>
         <border type="none"/>
@@ -157,6 +169,7 @@
           </grid>
         </constraints>
         <properties>
+          <focusable value="false"/>
           <visible value="true"/>
         </properties>
         <border type="none"/>
@@ -170,7 +183,9 @@
                 <maximum-size width="300" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <focusable value="false"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="58479" binding="startPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -182,7 +197,9 @@
                     <maximum-size width="300" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <focusable value="false"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="4555c" class="javax.swing.JButton" binding="loginButton">
@@ -213,6 +230,7 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <visible value="false"/>
                 </properties>
                 <border type="none"/>
@@ -267,6 +285,7 @@
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <focusable value="false"/>
                       <text value="Password:"/>
                       <visible value="true"/>
                     </properties>
@@ -276,6 +295,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <focusable value="false"/>
                       <text value="Login: "/>
                       <visible value="true"/>
                     </properties>
@@ -290,6 +310,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <visible value="false"/>
             </properties>
             <border type="none"/>
@@ -299,6 +320,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <text value="User: "/>
                 </properties>
               </component>
@@ -311,6 +333,7 @@
                 <properties>
                   <editable value="false"/>
                   <enabled value="true"/>
+                  <focusable value="false"/>
                 </properties>
               </component>
               <component id="61639" class="javax.swing.JLabel" binding="userTypeLabel">
@@ -318,6 +341,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <text value="User Type:"/>
                 </properties>
               </component>
@@ -329,6 +353,7 @@
                 </constraints>
                 <properties>
                   <editable value="false"/>
+                  <focusable value="false"/>
                 </properties>
               </component>
               <component id="ada72" class="javax.swing.JLabel" binding="balanceLabel">
@@ -336,6 +361,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <text value="Balance:"/>
                 </properties>
               </component>
@@ -347,6 +373,7 @@
                 </constraints>
                 <properties>
                   <editable value="false"/>
+                  <focusable value="false"/>
                 </properties>
               </component>
               <component id="65184" class="javax.swing.JButton" binding="refillBalanceButton" default-binding="true">
@@ -373,6 +400,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <visible value="false"/>
             </properties>
             <border type="none"/>
@@ -390,6 +418,7 @@
                   <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <requestFocusEnabled value="true"/>
                   <text value=""/>
                 </properties>
@@ -399,6 +428,7 @@
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <text value="Downloads"/>
                 </properties>
               </component>
@@ -410,6 +440,7 @@
                 </constraints>
                 <properties>
                   <editable value="false"/>
+                  <focusable value="false"/>
                 </properties>
               </component>
               <component id="43b4" class="javax.swing.JTextField" binding="purchasesField">
@@ -420,6 +451,7 @@
                 </constraints>
                 <properties>
                   <editable value="false"/>
+                  <focusable value="false"/>
                 </properties>
               </component>
               <component id="2fe8d" class="javax.swing.JLabel" binding="purchasesLabel">
@@ -427,6 +459,7 @@
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <focusable value="false"/>
                   <text value="Purchases"/>
                 </properties>
               </component>
@@ -438,6 +471,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusable value="false"/>
               <visible value="false"/>
             </properties>
             <border type="none"/>
@@ -464,7 +498,9 @@
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <focusable value="false"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="b19ca" class="javax.swing.JTextField" binding="statusLabel">
@@ -475,6 +511,7 @@
             </constraints>
             <properties>
               <editable value="false"/>
+              <focusable value="false"/>
             </properties>
           </component>
         </children>

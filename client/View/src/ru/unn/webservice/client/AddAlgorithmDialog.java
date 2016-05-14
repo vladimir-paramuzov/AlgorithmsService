@@ -4,6 +4,7 @@ import ru.unn.webservice.infrastructure.Algorithm;
 import ru.unn.webservice.infrastructure.Language;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -40,7 +41,10 @@ public class AddAlgorithmDialog extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         addSourceButton.addActionListener(e -> {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("*.cpp", "cpp", "c", "cc");
             JFileChooser fileopen = new JFileChooser();
+            fileopen.setFileFilter(filter);
+            fileopen.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int ret = fileopen.showDialog(null, "Add source file");
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileopen.getSelectedFile();
@@ -49,7 +53,10 @@ public class AddAlgorithmDialog extends JDialog {
         });
 
         addTestDataButton.addActionListener(e -> {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt", "TXT");
             JFileChooser fileopen = new JFileChooser();
+            fileopen.setFileFilter(filter);
+            fileopen.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int ret = fileopen.showDialog(null, "Add test data file");
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileopen.getSelectedFile();

@@ -157,6 +157,8 @@ public class DataAccess implements IDataAccess {
             if (algorithm == null) {
                 return new LoadAlgorithmsListDataResponse(null, "FAIL");
             }
+            algorithm.sourceFile = null;
+            algorithm.testFile = null;
             algorithmsList.add(algorithm);
         }
 
