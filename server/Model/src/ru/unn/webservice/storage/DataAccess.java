@@ -45,6 +45,9 @@ public class DataAccess implements IDataAccess {
         if (!STATISTIC_PATH.toFile().exists()) {
             STATISTIC_PATH.toFile().mkdir();
         }
+
+        User admin = new User("admin", "admin", User.TYPE.ADMIN, 0, new ArrayList<>());
+        writeUser(admin);
     }
 
     public IDataResponse process(IDataRequest request) {
@@ -154,6 +157,8 @@ public class DataAccess implements IDataAccess {
             if (algorithm == null) {
                 return new LoadAlgorithmsListDataResponse(null, "FAIL");
             }
+            algorithm.sourceFile = null;
+            algorithm.testFile = null;
             algorithmsList.add(algorithm);
         }
 

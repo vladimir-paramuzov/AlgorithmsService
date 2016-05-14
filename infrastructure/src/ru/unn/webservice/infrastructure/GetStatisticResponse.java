@@ -8,4 +8,12 @@ public class GetStatisticResponse implements IResponse {
         this.statistic = statistic;
         this.status = status;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Statistic getStatistic() {
+        return statistic;
+    }
 }
