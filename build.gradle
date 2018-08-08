@@ -1,6 +1,6 @@
 group 'AlgorithmsService'
 version '0.0.1'
-
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 buildscript {
     repositories {
         mavenCentral()
